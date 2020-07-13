@@ -1,0 +1,92 @@
+{% extends 'base/message_base.html' %}
+{% block content_message %}
+    <label for="chat-log"></label>
+    <div class="col-md-6">
+        <label for="chat-message-input"></label>
+        <input id="chat-message-input" type="text" class="form-control"><br>
+        <input id="chat-message-submit" type="button" value="Send">
+        {{ room_name|json_script:"room-name" }}
+        <div id="chat">
+            {% for message_obj in message_list_obj %}
+                {% if user.username == message_obj.sender.username %}
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="ml-auto"><p class="btn-success rounded">
+                            <small>{{ message_obj.sender | get_name }} {{ message_obj.sent_at | date:"D P" }}</small><br>{{ message_obj.message }}</p></div>
+
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <div class="col-auto"><p class="btn-primary rounded">
+                            <small>{{ message_obj.sender | get_name }} {{ message_obj.sent_at | date:"D P" }}</small><br>{{ message_obj.message }}</p></div>
+                        <div class="col"></div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="text-white align-content-center">
+            <ul class="pagination">
+                {% if ann_obj.has_previous %}
+                    <a class="btn btn-outline-light" href="?page=1">&laquo; first</a>
+                    <a class="btn btn-outline-light" href="?page={{ ann_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ ann_obj.number }} of {{ ann_obj.paginator.num_pages }}.
+                </span>
+                {% if ann_obj.has_next %}
+                    <a class="btn btn-outline-light" href="?page={{ ann_obj.next_page_number }}">next</a>
+                    <a class="btn btn-outline-light" href="?page={{ ann_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </ul>
+        </div>
+
+    </div>
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        var ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
+        const chatSocket = new WebSocket(
+            ws_scheme + '://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            var list = document.getElementById("chat");
+            var ele = $('<div class="row"> </div>');
+            ele.append(data.message);
+            $("#chat").prepend(ele);
+            var num = list.childElementCount;
+            if (num > 10) {
+                list.removeChild(list.childNodes[list.childElementCount - 1]);
+                list.removeChild(list.childNodes[list.childElementCount - 1]);
+            }
+        };
+
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function (e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            const sender_id = {{ user.id }};
+            const recipient_id = {{ recipient_id }};
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'sender_id': sender_id,
+                'recipient_id': recipient_id,
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+{% endblock content_message %}

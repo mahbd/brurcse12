@@ -1,0 +1,22 @@
+{
+  "update_id": 500150367,
+  "message": {
+    "message_id": 73,
+    "from": {
+      "id": 935679282,
+      "is_bot": "False",
+      "first_name": "Mahmudul",
+      "last_name": "Alam",
+      "username": "mahmudula2000",
+      "language_code": "en"
+    },
+    "chat": {
+      "id": -229054697,
+      "title": "mms_tutorials",
+      "type": "group",
+      "all_members_are_administrators": "True"
+    },
+    "date": 1591079543,
+    "text": "This is test"
+  }
+}

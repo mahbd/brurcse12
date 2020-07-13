@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <p class="display-4 text-white">Tutorials</p>
+        {% for topic, items in topics.items %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <a href="{% url 'tutorial:sp_tutorials' ids|get_item:topic %}" class="h3">{{ topic }}</a>
+                    <a class="padding10" href="{% url 'tutorial:add_tut' ids|get_item:topic %}">add</a>
+                </div>
+                <div class="card-body">
+                    {% for item in items %}
+                        <a href="{% url 'tutorial:tut' item.id %}"
+                           class="btn btn-outline-success card-text">{{ item.tut_title }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

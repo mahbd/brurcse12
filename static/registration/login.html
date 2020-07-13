@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container">
+        <br><br><br>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-auto card">
+                {% if form.errors %}
+                    <p class="card-text">Your username and password didn't match. Please try again.</p>
+                {% endif %}
+                <form class="card-text" method="post" action="{% url 'users:login' %}">
+                    <p class="alert-info">Please enter correct username and password. If you<br>are new then create new
+                        account by pressing register</p>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="form-group">
+                        <button class="btn btn-success" name="submit">Log in</button>
+                        <a class="btn-lg btn-info ml-auto" href="{% url 'users:reset_pass_form' %}">Reset Password</a>
+                    </div>
+                    <input class="card-deck" type="hidden" name="next" value="{% url 'home:home' %}"/>
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock content %}

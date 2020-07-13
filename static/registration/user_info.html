@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container text-white">
+        <p class="display-4">User Information</p>
+        <h3>First name: {{ first_name }}</h3>
+        <h3>Last name: {{ last_name }}</h3>
+        {% if not email %}
+            <h3 class="alert-danger">Email: Add email to be able to reset password</h3>
+        {% else %}
+            <h3>Email: {{ email }}</h3>
+        {% endif %}
+
+        <h3>Blood group: {{ blood_group }}</h3>
+        <h3>Joined on: {{ joined_on }}</h3>
+        <h3>Last visited: {{ last_visited }}</h3>
+        <a class="btn-lg btn-success h1" href="{% url 'users:edit' %}">Edit</a>
+    </div>
+{% endblock content %}

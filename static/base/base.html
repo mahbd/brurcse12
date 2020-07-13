@@ -1,0 +1,104 @@
+{% load static %}
+{% load custom_tags %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'customized.css' %}">
+    <title>{{ title }}</title>
+</head>
+<body style="background-color: #1b1e21">
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark text-white">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-bar01"><span
+            class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="nav-bar01">
+        <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'home:home' %}">Home</a>
+        <a class="font-size20 btn-outline-success text-white nav-item padding10"
+           href="{% url 'home:announcement' %}">Announcement</a>
+        {% if unread == 1 %}
+            <a class="font-size20 btn-danger text-white nav-item padding10" href="{% url 'message:inbox' %}">Message</a>
+        {% else %}
+            <a class="font-size20 btn-outline-success text-white nav-item padding10" href="{% url 'message:inbox' %}">Message</a>
+        {% endif %}
+        <a class="font-size20 btn-outline-success text-white nav-item padding10" href="{% url 'tutorial:tutorials' %}"
+        >Tutorial
+        </a>
+        <a class="font-size20 btn-outline-success text-white nav-item padding10"
+           href="{% url 'tutorial:contest_list' %}">Contest</a>
+        <a class="font-size20 btn-outline-success text-white nav-item padding10" href="{% url 'home:faq' %}">Faq</a>
+        <a class="font-size20 btn-outline-success text-white nav-item padding10" href="{% url 'api:api' %}">api</a>
+        {% if user.is_staff %}
+            <a class="font-size20 btn-outline-success text-white nav-item padding10" href="{% url 'tech:view_t' %}">
+                Technique</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <span class="ml-auto">
+            <a class="font-size20 btn-outline-success text-white nav-item" href="{% url 'users:info' %}">
+                {{ user|get_name }}
+            </a>
+            <a class="font-size20 btn-outline-danger text-white nav-item padding10" href="{% url 'users:logout' %}">
+                Logout
+            </a>
+            </span>
+        {% else %}
+            <span class="ml-auto">
+            <a class="font-size20 btn-outline-success text-white nav-item" href="{% url 'users:login' %}">
+                Login
+            </a>
+            <a class="font-size20 btn-outline-success text-white nav-item padding10" href="{% url 'users:create' %}">
+                Register
+            </a>
+            </span>
+        {% endif %}
+    </div>
+</nav>
+<!-- Start of different part. This is for home -->
+
+{% block content %}{% endblock content %}
+<br>
+<br>
+
+<!-- End of different part. This was for home -->
+<footer class="fixed-bottom bg-dark text-white row font-weight-bold" size="22">
+    <div class="container-fluid row">
+        <div class="col-auto">
+            <em>Designed by</em> <br>
+            <em>Mahmudul Alam</em> <br>
+        </div>
+    </div>
+</footer>
+<script>
+    function validateForm() {
+        const x = document.forms["MyForm"]["Text30"].value;
+        const y = document.forms["MyForm"]["Text00"].value;
+        if (x === "") {
+            alert("Fill the title");
+            document.getElementById("Text30").style.backgroundColor = "red";
+            document.getElementById("Text30").style.color = 'white';
+            return false;
+        }
+        if (x.length > 30) {
+            alert("Keep title within 30 character");
+            document.getElementById("Text30").style.backgroundColor = "red";
+            document.getElementById("Text30").style.color = 'white';
+            return false
+        }
+        if (y === "") {
+            alert("Fill the text");
+            document.getElementById("Text00").style.backgroundColor = "red";
+            document.getElementById("Text00").style.color = 'white';
+            return false;
+        }
+    } </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+</body>
+</html>

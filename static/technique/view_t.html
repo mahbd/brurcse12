@@ -1,0 +1,9 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container">
+        <a class="btn btn-success" href="{% url 'tech:add_t' %}">Add technique</a>
+        {% for tt in res %}
+            <p class="text-white btn btn-info">{{ tt }}</p>
+        {% endfor %}
+    </div>
+{% endblock content %}

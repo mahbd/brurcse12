@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container text-white">
+        <p class="display-4">{{ title }}</p>
+        <form name="MyForm" method="post" action="
+                {% if title == 'Edit announcement' %}
+                    {% url 'home:edit_ann' ann_id %}
+                {% else %}
+                    {% url 'home:add_ann' %}
+                {% endif %}"
+              onsubmit="return validateForm()">
+            {% csrf_token %}
+            {{ forms }}
+            <button class="btn-lg btn-outline-success font-size25" type="submit">Save</button>
+            {% if title == 'Edit announcement' %}
+                <a href="{% url 'home:delete_ann' ann_id %}"
+                   class="btn-lg btn-outline-danger font-size25">Delete</a>
+            {% endif %}
+        </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,78 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="card col-lg-3 d-none d-sm-block">
+                    <h5 class="card-header bg-success">Latest tutorial</h5>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            {% for tut in tut_obj %}
+                                <li class="list-group-item bg-light"><a
+                                        href="{% url 'tutorial:tut' tut.id %}">{{ tut.tut_title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{% static 'images/1.png' %}" class="d-block w-100" height="380px"
+                                     alt="This is first">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'images/2.png' %}" class="d-block w-100" height="380px"
+                                     alt="This is second">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'images/3.png' %}" class="d-block w-100" height="380px"
+                                     alt="This is third">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                           data-slide="prev">
+                            <span class="carousel-control-prev-icon bg-success" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                           data-slide="next">
+                            <span class="carousel-control-next-icon bg-success" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="card col-lg-3">
+                    <h5 class="card-header bg-success">Latest announcements</h5>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            {% for ann in ann_obj %}
+                                <li class="list-group-item bg-light"><a
+                                        href="{% url 'home:announcement' %}">{{ ann.ann_title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="background-color: #9fcdff">
+            <h3>Brief History</h3>
+            <p>We first place the topic in the page_header block u. Then we delete the
+                unordered list structure previously used in this template. Instead of making
+                each entry a list item, we create a div element with the selector card at v.
+                This card has two nested elements: one to hold the timestamp and the link
+                to edit the entry, and another to hold the body of the entry.
+                The first element in the card is a header, which is an element with
+                the selector card-header w. This card header contains the date the entry was
+                made and a link to edit the entry. The tag around the edit_entry link</p>
+        </div>
+    </div>
+
+{% endblock content %}

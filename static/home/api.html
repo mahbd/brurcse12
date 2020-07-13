@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container">
+        <p class="h5 text-info">This is made to help bot. All data will be updated every hour. But you can update it
+            anytime
+            by clicking <a href="{% url 'api:update' %}">here</a>. Click country, district or area name to get json data
+        </p>
+        <h1 class="text-white"><a href="{% url 'api:world' %}">World</a></h1>
+        <h1 class="text-white">Country</h1>
+        {% for country in cnt_obj %}
+            <p><a href="{% url 'api:country' country.country %}">{{ country.country }}</a></p>
+        {% endfor %}
+        <h1 class="text-white">District</h1>
+        {% for district in dst_obj %}
+            <p><a href="{% url 'api:district' district.name %}">{{ district.name }}</a></p>
+        {% endfor %}
+        <h1 class="text-white">Area</h1>
+        {% for area in area_obj %}
+            <p><a href="{% url 'api:dhaka' area.name %}">{{ area.name }}</a></p>
+        {% endfor %}
+    </div>
+{% endblock content %}

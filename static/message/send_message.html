@@ -1,0 +1,71 @@
+{% extends 'base/message_base.html' %}
+{% load custom_tags %}
+{% block content_message %}
+    <form action="{% url 'message:send' %}" method="post" name="myForm" onsubmit="return chCustom()">
+        {% csrf_token %}
+        <label for="myInput">Enter name</label>
+        <input autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" name="username" style="background-color: #b8daff"
+               class="form-control" type="text" placeholder="Username.." id="myInput" value="" onkeyup="filterFunction()">
+        <div id="myDropdown" class="dropdown">
+            {% for user in user_info %}
+                <p class="btn btn-outline-success" id="item" style="display: none" id="{{ user.username }}"
+                   onclick="changeValue('{{ user.username }}')">{{ user.username }}
+                    {% if user.first_name or user.last_name %}-> {{ user|get_name }}{% endif %}</p>
+            {% endfor %}
+        </div>
+        <label for="message"></label>
+        <textarea style="background-color: #b8daff" class="form-control" name="message" id="message" rows="10"></textarea>
+        <button class="btn btn-outline-success" type="submit">Send</button>
+    </form>
+    <script>
+    /* When the user clicks on the button,
+    toggle between hiding and showing the dropdown content */
+        function changeValue(rec_id) {
+            document.getElementById("myInput").value = rec_id;
+            myFunction();
+        }
+
+        function myFunction() {
+            var input, filter, ul, li, a, i, count = 0;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            div = document.getElementById("myDropdown");
+            a = div.getElementsByTagName("p");
+            for (i = 0; i < a.length; i++) {
+                a[i].style.display = "none";
+            }
+        }
+
+        function filterFunction() {
+            var input, filter, ul, li, a, i, count = 0;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            div = document.getElementById("myDropdown");
+            a = div.getElementsByTagName("p");
+            for (i = 0; i < a.length; i++) {
+                a[i].style.display = "none";
+            }
+            for (i = 0; i < a.length; i++) {
+                if (count > 4) break;
+                txtValue = a[i].textContent || a[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    a[i].style.display = "";
+                    count = count + 1;
+                } else {
+                    a[i].style.display = "none";
+                }
+            }
+        }
+        function chCustom() {
+            const valueForm22 = document.getElementById("myInput").value;
+            const infoFound = {{ user_list | safe }}
+            for(i = 0; i < infoFound.length; i++) {
+                if(infoFound[i] === valueForm22) {
+                    return true;
+                }
+            }
+            alert("Enter correct username")
+            return false
+        }
+    </script>
+{% endblock content_message %}

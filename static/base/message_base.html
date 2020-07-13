@@ -1,0 +1,11 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container text-white">
+        <nav class="navbar navbar-dark bg-dark text-white">
+            <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'message:inbox' %}">Inbox</a>
+            <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'message:group' %}">Group</a>
+            <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'message:send' %}">Send</a>
+        </nav>
+        {% block content_message %}{% endblock content_message %}
+    </div>
+{% endblock content %}

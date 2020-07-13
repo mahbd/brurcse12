@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container">
+        <br><br>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-auto card">
+                <form method="post" action="{% url 'users:create' %}">
+                    {% csrf_token %}
+                    {{ forms.as_p }}
+                    <div class="form-group">
+                        <button class="btn btn-success" name="submit">Register</button>
+                        <a class="btn-lg btn-success" href="{% url 'users:login' %}">Login</a>
+                        <a class="btn-lg btn-info ml-auto" href="{% url 'users:reset_pass_form' %}">Reset</a>
+                    </div>
+                    <input type="hidden" name="next" value="{% url 'home:home' %}"/>
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock content %}

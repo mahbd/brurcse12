@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container text-white">
+        <form name="myForm" action="{% url 'users:edit' %}" method="post">
+            <label for="f_n">First Name</label>
+            <input value="{{ first_name }}" style="background-color: #b8daff" name="first_name" type="text"
+                   class="form-control" id="f_n">
+            <label for="l_n">Last Name</label>
+            <input value="{{ last_name }}" style="background-color: #b8daff" name="last_name" type="text"
+                   class="form-control" id="l_n">
+            <label for="email">Email</label>
+            <input value="{{ email }}" style="background-color: #b8daff" name="email" type="email" class="form-control"
+                   id="email">
+            <div class="form-group">
+                <label for="b_g">Blood Group</label>
+                <select name="blood_group" class="form-control" id="b_g">
+                    {% for bg_option in bg_options %}
+                        <option>{{ bg_option }}</option>
+                    {% endfor %}
+                </select>
+                <button class="btn-lg btn-outline-success font-size25" type="submit">Save</button>
+        </form>
+    </div>
+{% endblock content %}

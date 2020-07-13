@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-auto card">
+                <form method="post" action="{% url 'users:reset_pass' tok %}">
+                    {% csrf_token %}
+                    {{ forms }}
+                    <button class="btn-lg btn-success" type="submit">Save</button>
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock content %}

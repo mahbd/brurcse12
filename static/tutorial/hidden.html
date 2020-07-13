@@ -1,0 +1,8 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <h3 class="alert-danger">Sorry, tutorial is hidden. Maybe The contest is still running. If
+        you think this should be open now message <a href="{% url 'message:target' 1 %}"> here</a></h3>
+    {% if wait_till %}
+        <h3 class="alert-success">The tutorial will be available for public from {{ wait_till }}</h3>
+    {% endif %}
+{% endblock content %}

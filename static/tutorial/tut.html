@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container">
+        {% if tut_obj.hidden %}
+            <div class="col-auto alert-danger"><p>This tutorial is hidden</p></div>
+        {% endif %}
+        <div class="card mb-3">
+            <h4 class="card-header">
+                {% if tut_obj.question_link %}
+                    <a href="{{ tut_obj.question_link }}">{{ title }}</a>
+                {% else %}
+                    {{ title }}
+                {% endif %}
+                <small>
+                    {% if user.id == tut_obj.owner_id or user.id == 1 or user.id == 2 %}
+                        <a href="{% url 'tutorial:edit' tut_obj.id %}">edit</a>
+                    {% else %}
+                        <a href="{% url 'message:target' tut_obj.owner_id %}">request correction</a>
+                    {% endif %}
+                    <br>Date: {{ tut_obj.date }} by:{{ tut_obj.owner|get_name }}</small>
+            </h4>
+            <div class="card-body">
+                <p>{{ tut_obj.tut_text | safe }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -102,8 +102,8 @@ elif os.environ.get('DEBUG') == 'FALSE':
 
 # Email configuration
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = "mahmuduly2000@gmail.com"
+EMAIL_HOST_PASSWORD = str(os.environ.get('MAHMUDULY2000_PASS'))
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 

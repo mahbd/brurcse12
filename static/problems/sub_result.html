@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container text-white">
+        {% if result.verdict == "AC" %}
+            <h3 > <span class="btn-success">Congratulations!!</span> <small>Your code has been accepted</small></h3>
+        {% elif result.verdict == "CE" %}
+            <h3 class="text-danger"><small>Sorry. Please check your syntax. Compilation error</small></h3>
+        {% elif result.verdict == "WA" %}
+            <h3><small>Sorry. Wrong answer.</small></h3>
+            <div class="bg-info">
+                <h6 class="text-dark">Please check bellow for which input your program giving wrong ans</h6></div>
+        {% endif %}
+        <h6>Your code</h6>
+        <code>{{ code | safe }}</code>
+        {% if result.verdict != "CE" %}
+            {% for test_case in result.process %}
+                <p>{{ test_case.verdict }}</p>
+                {% for out in test_case.out %}
+                    <p>{{ out }}</p>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock content %}

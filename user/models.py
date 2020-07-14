@@ -17,6 +17,7 @@ bg = (
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     blood_group = models.CharField(max_length=5, blank=True, choices=bg)
+    user_code = models.CharField(max_length=100, default='not_added')
 
     class Meta:
         ordering = ['-blood_group']
@@ -30,7 +31,7 @@ class Token(models.Model):
     identity = models.CharField(max_length=200)
     type = models.CharField(max_length=20)
     date = models.DateTimeField(auto_now_add=True)
-
+# Register your models here.
     class Meta:
         ordering = ['-date']
 

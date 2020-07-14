@@ -1,0 +1,11 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container text-white">
+        {% for an in ann %}
+            <h3>{{ an.text }}</h3>
+        {% endfor %}
+        {% for problem in problem_list %}
+            <a href="{% url 'problems:problem' problem.id %}">{{ problem.problem_name }}</a><br>
+            {% endfor %}
+    </div>
+{% endblock content %}

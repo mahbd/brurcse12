@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container text-white">
+        <h2>{{ problem.problem_name }}</h2>
+        <p>{{ problem.problem_statement }}</p>
+        <h4>Input:</h4>
+        <p>{{ problem.input_terms }}</p>
+        <h4>Output</h4>
+        <p>{{ problem.output_terms }}</p>
+        <h1></h1>
+        <form action="{% url 'problems:sub_res' problem.id %}" method="post" name="codeForm">
+            {% csrf_token %}
+            <label for="code" class="h3">Enter you code</label>
+            <textarea style="background-color: #b8daff" name="code" id="code" rows="10" class="form-control"></textarea>
+            <button type="submit" class="btn-lg btn-outline-success">Send</button>
+        </form>
+    </div>
+{% endblock content %}

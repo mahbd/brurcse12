@@ -1,12 +1,13 @@
 import os
 import django_heroku
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = ''
+SECRET_KEY = '%3ppyvzajja12$8q7)08+_+tkwqnvdw(gx3&4k8wt$od)waee9'
 DEBUG = True
 
 ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # personal apps
+    'problems',
     'chat',
     'channels',
     'api',

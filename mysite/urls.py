@@ -9,5 +9,6 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('message/', include('message.urls')),
     path('chat/', include('chat.urls')),
+    path('problems/', include('problems.urls')),
     path('', include('home.urls')),
 ]

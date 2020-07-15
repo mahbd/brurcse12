@@ -29,7 +29,7 @@ def update_uri_points(request):
                 solved = m.text[8:].strip()
                 print(solved)
                 break
-        info.solved = solved
+        info.solves = int(solved)
         info.points = point
         info.save()
     return redirect('jInfo:home')

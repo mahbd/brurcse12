@@ -5,10 +5,10 @@ class UriInfo(models.Model):
     name = models.CharField(max_length=100)
     profile_url = models.CharField(max_length=100)
     points = models.CharField(max_length=20)
-    solved = models.CharField(max_length=10)
+    solves = models.IntegerField(default=0)
 
     class Meta:
-        ordering = ['-solved']
+        ordering = ['-solves']
 
     def __str__(self):
         return self.name

@@ -34,12 +34,7 @@ def submission_result(request, problem_id):
         raise Http404
     submission_code = request.POST['code']
     if request.user.is_authenticated:
-        user_code = UserInfo.objects.get(user_id=request.user.id).user_code
-        if user_code == 'not_added':
-            user_code = token_generator(10)
-            user = UserInfo.objects.get(user_id=request.user.id)
-            user.user_code = user_code
-            user.save()
+        user_code = request.user.username
     else:
         user_code = 'guest'
     data = {

@@ -2,7 +2,7 @@
 {% block content %}
     <div class="container text-white">
         {% if result.verdict == "AC" %}
-            <h3 > <span class="btn-success">Congratulations!!</span> <small>Your code has been accepted</small></h3>
+            <h3><span class="btn-success">Congratulations!!</span> <small>Your code has been accepted</small></h3>
         {% elif result.verdict == "CE" %}
             <h3 class="text-danger"><small>Sorry. Please check your syntax. Compilation error</small></h3>
         {% elif result.verdict == "WA" %}
@@ -11,13 +11,23 @@
                 <h6 class="text-dark">Please check bellow for which input your program giving wrong ans</h6></div>
         {% endif %}
         <h6>Your code</h6>
-        <code>{{ code | safe }}</code>
+        <pre class="text-white">{{ code }}</pre>
         {% if result.verdict != "CE" %}
             {% for test_case in result.process %}
-                <p>{{ test_case.verdict }}</p>
-                {% for out in test_case.out %}
-                    <p>{{ out }}</p>
-                {% endfor %}
+                <div class="card mb-3 text-dark">
+                    <div class="card-header">
+                        {% if test_case.verdict == 'WA' %}
+                            <h6 class="text-danger">Here is your mistake. Right part is correct ans</h6>
+                        {% else %}
+                            <h6 class="text-success">Accepted</h6>
+                        {% endif %}
+                    </div>
+                    <div class="card-header">
+                        {% for out in test_case.out %}
+                            <p>{{ out }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
             {% endfor %}
         {% endif %}
     </div>

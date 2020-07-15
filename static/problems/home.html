@@ -5,7 +5,12 @@
             <h3>{{ an.text }}</h3>
         {% endfor %}
         {% for problem in problem_list %}
-            <a href="{% url 'problems:problem' problem.id %}">{{ problem.problem_name }}</a><br>
-            {% endfor %}
+            <div class="card mb-3 text-dark">
+                <div class="card-header">
+                    <a class="h5" href="{% url 'problems:problem' problem.id %}">{{ problem.problem_name }}</a>
+                </div>
+                <div class="card-body">{{ problem.problem_statement| truncatechars:50 }}</div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock content %}

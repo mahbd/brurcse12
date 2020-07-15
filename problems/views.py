@@ -50,6 +50,7 @@ def submission_result(request, problem_id):
         "contest_id": 0,
     }
     res = requests.post('http://mahbd.pythonanywhere.com/compiler/', data=data).json()
+    print(res)
     if not res['correct']:
         return HttpResponse(res['status'])
     else:

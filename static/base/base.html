@@ -32,6 +32,8 @@
         </a>
         <a class="font-size20 btn-outline-success text-white nav-item padding10"
            href="{% url 'problems:home' %}">Problems</a>
+        <a class="font-size20 btn-outline-success text-white nav-item padding10"
+           href="{% url 'jInfo:home' %}">jInfo</a>
         <a class="font-size20 btn-outline-success text-white nav-item padding10" href="{% url 'home:faq' %}">Faq</a>
         <a class="font-size20 btn-outline-success text-white nav-item padding10" href="{% url 'api:api' %}">api</a>
         {% if user.is_staff %}

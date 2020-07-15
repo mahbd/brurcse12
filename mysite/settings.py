@@ -7,6 +7,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # personal apps
+    'judge_info',
     'problems',
     'chat',
     'channels',

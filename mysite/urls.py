@@ -10,5 +10,6 @@ urlpatterns = [
     path('message/', include('message.urls')),
     path('chat/', include('chat.urls')),
     path('problems/', include('problems.urls')),
+    path('jInfo/', include('judge_info.urls')),
     path('', include('home.urls')),
 ]

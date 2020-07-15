@@ -1,9 +1,6 @@
 import requests
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
-
-from home.all_functions import token_generator
-from user.models import UserInfo
 from .models import ProbAnn
 
 
@@ -56,3 +53,11 @@ def submission_result(request, problem_id):
         }
         return render(request, 'problems/sub_result.html', context)
 
+
+def contest_list(request):
+    res = requests.get('http://mahbd.pythonanywhere.com/compiler/get_contest_list/')
+    context = {
+        'title': 'contests',
+        'contest_list': res,
+    }
+    return render(request, 'problems/contest_list.html', context)

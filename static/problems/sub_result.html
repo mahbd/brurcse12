@@ -1,5 +1,5 @@
-{% extends 'base/base.html' %}
-{% block content %}
+{% extends 'base/problem_base.html' %}
+{% block content2 %}
     <div class="container text-white">
         {% if result.verdict == "AC" %}
             <h3><span class="btn-success">Congratulations!!</span> <small>Your code has been accepted</small></h3>
@@ -31,4 +31,4 @@
             {% endfor %}
         {% endif %}
     </div>
-{% endblock content %}
+{% endblock content2 %}

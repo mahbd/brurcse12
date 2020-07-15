@@ -1,5 +1,5 @@
-{% extends 'base/base.html' %}
-{% block content %}
+{% extends 'base/problem_base.html' %}
+{% block content2 %}
     <div class="container text-white">
         <h2>{{ problem.problem_name }}</h2>
         <p>{{ problem.problem_statement }}</p>
@@ -15,4 +15,4 @@
             <button type="submit" class="btn-lg btn-outline-success">Send</button>
         </form>
     </div>
-{% endblock content %}
+{% endblock content2 %}

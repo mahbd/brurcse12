@@ -7,5 +7,8 @@ class UriInfo(models.Model):
     points = models.CharField(max_length=20)
     solved = models.CharField(max_length=10)
 
+    class Meta:
+        ordering = ['-solved']
+
     def __str__(self):
         return self.name

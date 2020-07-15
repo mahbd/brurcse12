@@ -1,0 +1,15 @@
+{% extends 'base/problem_base.html' %}
+{% block content2 %}
+    <div class="container text-white">
+    {% for contest in contest_list %}
+        <div class="card mb3 text-dark">
+        <div class="card-header">
+            <p>By: {{ contest.creator }}...Start: {{ contest.start_time }}...End: {{ contest.end_time }}</p>
+        </div>
+        <div class="card-body">
+            <a href="#">{{ contest.contest_name }}</a>
+        </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock content2 %}

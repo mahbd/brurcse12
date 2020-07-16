@@ -1,15 +1,52 @@
 {% extends 'base/problem_base.html' %}
 {% block content2 %}
     <div class="container text-white">
-    {% for contest in contest_list %}
-        <div class="card mb3 text-dark">
-        <div class="card-header">
-            <p>By: {{ contest.creator }}...Start: {{ contest.start_time }}...End: {{ contest.end_time }}</p>
-        </div>
-        <div class="card-body">
-            <a href="#">{{ contest.contest_name }}</a>
-        </div>
-        </div>
-    {% endfor %}
+        <h3>Running contests</h3>
+        {% if running_contests|length == 0 %}
+            <h6>No running contests</h6>
+        {% else %}
+            {% for contest in running_contests %}
+                <div class="card mb3 text-dark">
+                    <div class="card-header">
+                        <p>By: {{ contest.creator }}...Start: {{ contest.start_time }}...End: {{ contest.end_time }}</p>
+                    </div>
+                    <div class="card-body">
+                        <a href="#">{{ contest.contest_name }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <h3>Upcoming contests</h3>
+        {% if upcoming_contests|length == 0 %}
+            <h6>No upcoming contests</h6>
+        {% else %}
+            {% for contest in upcoming_contests %}
+                <div class="card mb3 text-dark">
+                    <div class="card-header">
+                        <p>By: {{ contest.creator }}...Start: {{ contest.start_time }}...End: {{ contest.end_time }}</p>
+                    </div>
+                    <div class="card-body">
+                        <a href="#">{{ contest.contest_name }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <h3>Ended contests</h3>
+        {% if ended_contest|length == 0 %}
+            <h6>No Ended contests</h6>
+        {% else %}
+            {% for contest in ended_contest %}
+                <div class="card mb3 text-dark">
+                    <div class="card-header">
+                        <p>By: {{ contest.creator }}...Start: {{ contest.start_time }}...End: {{ contest.end_time }}</p>
+                    </div>
+                    <div class="card-body">
+                        <a href="#">{{ contest.contest_name }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
 {% endblock content2 %}

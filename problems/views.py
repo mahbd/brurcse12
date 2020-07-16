@@ -1,3 +1,6 @@
+from datetime import datetime
+
+import pytz
 import requests
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
@@ -55,9 +58,32 @@ def submission_result(request, problem_id):
 
 
 def contest_list(request):
-    res = requests.get('http://mahbd.pythonanywhere.com/compiler/get_contest_list/')
+    res = requests.get('http://mahbd.pythonanywhere.com/compiler/get_contest_list/').json()
+    upcoming_contests, running_contests, ended_contests = [], [], []
+    res = res['contests']
+    tz_dhaka = pytz.timezone('Asia/Dhaka')
+    present = tz_dhaka.localize(datetime.now())
+    for cc in res:
+        start_time = pytz.timezone('UTC').localize(datetime.strptime(cc['start_time'], "%Y-%m-%dT%H:%M:%SZ"))
+        end_time = pytz.timezone('UTC').localize(datetime.strptime(cc['end_time'], "%Y-%m-%dT%H:%M:%SZ"))
+        start_time = start_time.astimezone(tz_dhaka)
+        end_time = end_time.astimezone(tz_dhaka)
+        cc['start_time'] = datetime.strftime(start_time, "%a %I:%M %P")
+        cc['end_time'] = datetime.strftime(end_time, "%a %I:%M %P")
+        if present < start_time:
+            upcoming_contests.append(cc)
+        elif end_time < present:
+            ended_contests.append(cc)
+        else:
+            running_contests.append(cc)
+    for contest in res:
+        print(contest)
     context = {
         'title': 'contests',
-        'contest_list': res,
+        'running_contests': running_contests,
+        'upcoming_contests': upcoming_contests,
+        'ended_contest': ended_contests,
     }
+    if len(running_contests) == 0:
+        print("blank")
     return render(request, 'problems/contest_list.html', context)

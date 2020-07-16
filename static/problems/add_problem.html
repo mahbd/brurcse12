@@ -1,0 +1,23 @@
+{% extends 'base/problem_base.html' %}
+{% block content2 %}
+    <div class="container bg-white text-dark">
+        <h2>Add problem</h2>
+        <form action="{% url 'problems:add_problem' %}" method="post">
+            {% csrf_token %}
+            <label for="ps">Problem Statement</label>
+            <textarea name="ps" id="ps" class="form-control" rows="8"></textarea>
+            <label for="it">Input terms</label>
+            <textarea name="it" id="it" class="form-control" rows="4"></textarea>
+            <label for="ot">Output terms</label>
+            <textarea name="ot" id="ot" class="form-control" rows="4"></textarea>
+            <label for="cc">Correct code</label>
+            <textarea name="cc" id="cc" class="form-control" rows="8"></textarea>
+            <label for="exampleFormControlSelect1">Who can see</label>
+            <select class="form-control" id="exampleFormControlSelect1">
+                <option value="public">Public</option>
+                <option value="batch12">Batch12</option>
+            </select>
+                <button type="submit" class="btn-lg btn-outline-success">Save</button>
+        </form>
+    </div>
+{% endblock content2 %}

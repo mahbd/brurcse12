@@ -2,6 +2,7 @@ from datetime import datetime
 
 import pytz
 import requests
+from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from .models import ProbAnn
@@ -10,6 +11,7 @@ from .models import ProbAnn
 def problems(request):
     ann = ProbAnn.objects.all()
     problem_list = requests.get('http://mahbd.pythonanywhere.com/compiler/get_problem_list/').json()['problems']
+    print(problem_list)
     for m in problem_list:
         print(m['problem_name'])
     context = {
@@ -87,3 +89,20 @@ def contest_list(request):
     if len(running_contests) == 0:
         print("blank")
     return render(request, 'problems/contest_list.html', context)
+
+
+@login_required
+def add_problem(request, contest_id=0):
+    if request.method == 'POST':
+        problem_statement = request.POST['ps']
+        input_terms = request.POST['it']
+        output_terms = request.POST['ot']
+        correct_code = request.POST['cc']
+        group = request.POST['group']
+        return 0
+
+    context = {
+        'title': "add problem",
+        'contest_id': contest_id,
+    }
+    return render(request, 'problems/add_problem.html', context)

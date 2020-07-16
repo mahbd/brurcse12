@@ -11,7 +11,7 @@
         <form action="{% url 'problems:sub_res' problem.id %}" method="post" name="codeForm">
             {% csrf_token %}
             <label for="code" class="h3">Enter you code</label>
-            <textarea style="background-color: #b8daff" name="code" id="code" rows="10" class="form-control"></textarea>
+            <textarea name="code" id="code" rows="10" class="form-control"></textarea>
             <button type="submit" class="btn-lg btn-outline-success">Send</button>
         </form>
     </div>

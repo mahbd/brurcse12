@@ -4,7 +4,7 @@ import pytz
 import requests
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import ProbAnn
 
 
@@ -92,17 +92,22 @@ def contest_list(request):
 
 
 @login_required
-def add_problem(request, contest_id=0):
+def add_problem(request, cid):
     if request.method == 'POST':
-        problem_statement = request.POST['ps']
-        input_terms = request.POST['it']
-        output_terms = request.POST['ot']
-        correct_code = request.POST['cc']
-        group = request.POST['group']
-        return 0
-
+        data = {
+            "problem_name": request.POST['pn'],
+            "problem_statement": request.POST['ps'],
+            "input_terms": request.POST['it'],
+            "output_terms": request.POST['ot'],
+            "creator": request.user.username,
+            "group": request.POST['group'],
+            "correct_code": request.POST['cc'],
+            "hidden": True
+        }
+        response = requests.post('http://mahbd.pythonanywhere.com/compiler/add_problem/', data=data).json()
+        return redirect('problems:problem', response['id'])
     context = {
         'title': "add problem",
-        'contest_id': contest_id,
+        'contest_id': cid,
     }
     return render(request, 'problems/add_problem.html', context)

@@ -7,5 +7,5 @@ urlpatterns = [
     path('problem=<int:problem_id>/', views.problem, name='problem'),
     path('sub_res=<int:problem_id>', views.submission_result, name='sub_res'),
     path('contest_list/', views.contest_list, name='contest_list'),
-    path('add_problem/', views.add_problem, name='add_problem'),
+    path('add_problem=<int:cid>/', views.add_problem, name='add_problem'),
 ]

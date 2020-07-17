@@ -117,7 +117,9 @@ def add_problem(request, cid):
 
 
 def get_file(request, problem_id):
-    print("Running")
-    print(problem_id)
     dir2 = os.path.join(BASE_DIR, 'home/static/src/mode-c_pp.js')
-    return FileResponse(dir2)
+    file = open(dir2, 'r')
+    string1 = ''
+    for m in file:
+        string1 += m.strip() + '\n'
+    return HttpResponse('<script>' + string1 + '</script>')

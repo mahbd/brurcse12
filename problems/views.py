@@ -122,7 +122,7 @@ def get_file(request, file_name):
     res = ''
     for m in file:
         res += m.strip() + '\n'
-    return HttpResponse(res, content_type='application/force-download')
+    return HttpResponse(res, content_type='application/javascript')
 
 
 def get_file_snippets(request, file_name):
@@ -131,7 +131,7 @@ def get_file_snippets(request, file_name):
     res = ''
     for m in file:
         res += m.strip() + '\n'
-    return HttpResponse(res, content_type='application/force-download')
+    return HttpResponse(res, content_type='application/javascript')
 
 
 def add_test_case(request):

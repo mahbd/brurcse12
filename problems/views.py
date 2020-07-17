@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from mysite.settings import BASE_DIR
 import pytz
 import requests
 from django.contrib.auth.decorators import login_required
@@ -18,6 +18,7 @@ def problems(request):
         'title': 'problems',
         'ann': ann,
         'problem_list': problem_list,
+
     }
     return render(request, 'problems/home.html', context)
 
@@ -27,6 +28,7 @@ def problem(request, problem_id):
     context = {
         'title': "problem",
         'problem': problem_info,
+        'base_d': BASE_DIR,
     }
     return render(request, 'problems/problem.html', context)
 

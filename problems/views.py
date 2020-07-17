@@ -116,10 +116,19 @@ def add_problem(request, cid):
     return render(request, 'problems/add_problem.html', context)
 
 
-def get_file(request, problem_id):
-    dir2 = os.path.join(BASE_DIR, 'home/static/src/mode-c_pp.js')
+def get_file(request, file_name):
+    dir2 = os.path.join(BASE_DIR + '/home/static/' + file_name)
     file = open(dir2, 'r')
-    string1 = ''
+    res = ''
     for m in file:
-        string1 += m.strip() + '\n'
-    return HttpResponse('<script>' + string1 + '</script>')
+        res += m.strip() + '\n'
+    return HttpResponse(res, content_type='application/javascript')
+
+
+def get_file_snippets(request, file_name):
+    dir2 = os.path.join(BASE_DIR + '/home/static/snippets/' + file_name)
+    file = open(dir2, 'r')
+    res = ''
+    for m in file:
+        res += m.strip() + '\n'
+    return HttpResponse(res, content_type='application/javascript')

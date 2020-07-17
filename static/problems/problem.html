@@ -23,15 +23,15 @@
             <button type="submit" class="btn-lg btn-outline-success">Send</button>
         </form>
     </div>
-    <script src="{% static 'src/ace.js' %}"></script>
-    <script src="{% static 'src/ext-language_tools.js' %}"></script>
+    <script src="http://brurcse12.herokuapp.com/problems/get_file/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.min.js"></script>
     <script>
         // trigger extension
-        // ace.config.set('basePath', '/app/home/static/src');
+        ace.config.set('basePath', 'http://brurcse12.herokuapp.com/problems/get_file')
         ace.require("ace/ext/language_tools");
         var editor = ace.edit("editor");
         editor.session.setMode("ace/mode/c_cpp");
-        editor.setTheme("ace/theme/chrome");
+        editor.setTheme("ace/theme/merbivore");
         // enable autocompletion and snippets
         editor.setOptions({
             enableBasicAutocompletion: true,

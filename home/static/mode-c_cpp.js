@@ -59,7 +59,7 @@ var cFunctions = exports.cFunctions = "\\b(?:hypot(?:f|l)?|s(?:scanf|ystem|nprin
 var c_cppHighlightRules = function() {
 
     var keywordControls = (
-        "break|case|continue|default|do|else|for|goto|if" +
+        "break|case|continue|default|do|else|for|goto|if|" +
         "return|switch|while|operator"
     );
     
@@ -76,7 +76,7 @@ var c_cppHighlightRules = function() {
     );
 
     var keywordOperators = (
-        "sizeof|using namespace std;|"
+        "sizeof|using namespace std|"
     );
 
     var builtinConstants = (

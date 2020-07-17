@@ -1,9 +1,10 @@
+import os
 from datetime import datetime
 from mysite.settings import BASE_DIR
 import pytz
 import requests
 from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponse
+from django.http import *
 from django.shortcuts import render, redirect
 from .models import ProbAnn
 
@@ -113,3 +114,8 @@ def add_problem(request, cid):
         'contest_id': cid,
     }
     return render(request, 'problems/add_problem.html', context)
+
+
+def get_file(request):
+    dir2 = os.path.join(BASE_DIR, 'home/static/src/mode-c_pp.js')
+    return FileResponse(dir2)

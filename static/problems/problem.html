@@ -28,11 +28,9 @@
     <script>
         // trigger extension
         ace.config.set('basePath', {% static 'src' %});
-        ace.config.set('modePath', {% static 'src/snippets' %});
-        ace.config.set('themePath', {% static 'src' %});
         ace.require("ace/ext/language_tools");
         var editor = ace.edit("editor");
-        editor.session.setMode("ace/mode/c_cpp");
+        editor.session().setMode("ace/mode/c_cpp");
         editor.setTheme("ace/theme/chrome");
         // enable autocompletion and snippets
         editor.setOptions({

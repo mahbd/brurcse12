@@ -132,3 +132,7 @@ def get_file_snippets(request, file_name):
     for m in file:
         res += m.strip() + '\n'
     return HttpResponse(res, content_type='application/javascript')
+
+
+def add_test_case(request):
+    return 0

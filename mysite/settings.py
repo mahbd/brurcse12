@@ -1,7 +1,7 @@
 import os
 import django_heroku
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = '%3ppyvzajja12$8q7)08+_+tkwqnvdw(gx3&4k8wt$od)waee9'
+SECRET_KEY = str(os.environ.get('BRURCSE12_SECRET_KEY'))
 DEBUG = True
 
 ALLOWED_HOSTS = []

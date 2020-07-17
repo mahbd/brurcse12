@@ -8,27 +8,33 @@
         {% elif result.verdict == "WA" %}
             <h3><small>Sorry. Wrong answer.</small></h3>
             <div class="bg-info">
-                <h6 class="text-dark">Please check bellow for which input your program giving wrong ans</h6></div>
+                <h6 class="text-dark">Please check the last row for which input your program giving wrong ans</h6></div>
         {% endif %}
         <h6>Your code</h6>
         <pre class="text-white">{{ code }}</pre>
         {% if result.verdict != "CE" %}
-            {% for test_case in result.process %}
-                <div class="card mb-3 text-dark">
-                    <div class="card-header">
-                        {% if test_case.verdict == 'WA' %}
-                            <h6 class="text-danger">Here is your mistake. Right part is correct ans</h6>
-                        {% else %}
-                            <h6 class="text-success">Accepted</h6>
-                        {% endif %}
-                    </div>
-                    <div class="card-header">
-                        {% for out in test_case.out %}
-                            <p>{{ out }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endfor %}
+            <table class="table table-dark text-white">
+                <thead>
+                <tr>
+                    <th scope="col">Input</th>
+                    <th scope="col">Your Output</th>
+                    <th scope="col">Cor. Output</th>
+                </tr>
+                </thead>
+                {% for test_case in result.process %}
+                    <tr>
+                        <th scope="col">
+                            <pre class="text-white">{{ test_case.out.0 }}</pre>
+                        </th>
+                        <th scope="col">
+                            <pre class="text-white">{{ test_case.out.2 }}</pre>
+                        </th>
+                        <th scope="col">
+                            <pre class="text-white">{{ test_case.out.1 }}</pre>
+                        </th>
+                    </tr>
+                {% endfor %}
+            </table>
         {% endif %}
     </div>
 {% endblock content2 %}

@@ -1,6 +1,12 @@
 {% extends 'base/problem_base.html' %}
+{% load static %}
 {% block content2 %}
     <div class="container text-white">
+        {% if problem.creator == user.username %}
+            <div class="bg-info"><p>Add more powerful test case to make your problem powerful. Due to hardware
+                restrictions don't add more than 10 test case which may make judging impossible.</p></div>
+            <a href="#" class="btn-lg btn-outline-success">Add TestCase</a>
+        {% endif %}
         <h2>{{ problem.problem_name }}</h2>
         <p>{{ problem.problem_statement }}</p>
         <h4>Input:</h4>
@@ -10,9 +16,41 @@
         <h1></h1>
         <form action="{% url 'problems:sub_res' problem.id %}" method="post" name="codeForm">
             {% csrf_token %}
-            <label for="code" class="h3">Enter you code</label>
-            <textarea name="code" id="code" rows="10" class="form-control"></textarea>
+            <label for="editor" class="h3">Enter you code</label>
+            <pre id="editor"></pre>
+            <label for="code"></label>
+            <textarea name="code" id="code" style="display: none;"></textarea>
             <button type="submit" class="btn-lg btn-outline-success">Send</button>
         </form>
     </div>
+    <script src="{% static 'src/ace.js' %}"></script>
+    <script src="{% static 'src/ext-language_tools.js' %}"></script>
+    <script>
+        // trigger extension
+        ace.require("ace/ext/language_tools");
+        var editor = ace.edit("editor");
+        editor.session.setMode("ace/mode/c_cpp");
+        editor.setTheme("ace/theme/merbivore");
+        // enable autocompletion and snippets
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+        });
+        editor.setFontSize("18px")
+        editor.commands.addCommand({
+            name: "showKeyboardShortcuts",
+            bindKey: {win: "Ctrl-Alt-h", mac: "Command-Alt-h"},
+            exec: function (editor) {
+                ace.config.loadModule("ace/ext/keybinding_menu", function (module) {
+                    module.init(editor);
+                    editor.showKeyboardShortcuts()
+                })
+            }
+        })
+        var textarea = document.getElementById('code');
+        editor.getSession().on("change", function () {
+            textarea.value = editor.getSession().getValue();
+        });
+    </script>
 {% endblock content2 %}

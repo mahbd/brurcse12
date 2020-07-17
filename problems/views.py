@@ -117,5 +117,6 @@ def add_problem(request, cid):
 
 
 def get_file(request):
+    print("Running")
     dir2 = os.path.join(BASE_DIR, 'home/static/src/mode-c_pp.js')
     return FileResponse(dir2)

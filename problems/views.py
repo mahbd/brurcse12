@@ -132,16 +132,16 @@ def add_problem(request, cid):
         hidden = False
     else:
         hidden = True
-    try:
-        problem_name = request.POST['pn']
-        problem_statement = request.POST['ps']
-        input_terms = request.POST['it']
-        output_terms = request.POST['ot']
-        group = request.POST['group']
-        correct_code = request.POST['cc']
-    except KeyError:
-        return HttpResponse("Error in forms")
     if request.method == 'POST':
+        try:
+            problem_name = request.POST['pn']
+            problem_statement = request.POST['ps']
+            input_terms = request.POST['it']
+            output_terms = request.POST['ot']
+            group = request.POST['group']
+            correct_code = request.POST['cc']
+        except KeyError:
+            return HttpResponse("Error in forms")
         data = {
             "problem_name": problem_name,
             "problem_statement": problem_statement,

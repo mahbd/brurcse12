@@ -17,8 +17,10 @@ def problems(request):
     data = {
         "JAT": JAT,
     }
-    problem_list = requests.post('http://' + b_u_a + '/compiler/get_problem_list/', data=data).json()['problems']
-    print(problem_list)
+    problem_list = requests.post('http://' + b_u_a + '/compiler/get_problem_list/', data=data).json()
+    if not problem_list['correct']:
+        return HttpResponse(problem_list['status'])
+    problem_list = problem_list['problems']
     for m in problem_list:
         print(m['problem_name'])
     context = {
@@ -36,6 +38,8 @@ def problem(request, problem_id):
         "JAT": JAT
     }
     problem_info = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
+    if not problem_info['correct']:
+        return HttpResponse(problem_info['status'])
     context = {
         'title': "problem",
         'problem': problem_info,

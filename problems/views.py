@@ -223,6 +223,7 @@ def contest_problems(request, contest_id):
     if not problem_list['correct']:
         return HttpResponse(problem_list['correct'])
     problem_list = problem_list['problems']
+    problem_list.reverse()
     for m in problem_list:
         print(m['problem_name'])
     context = {
@@ -255,13 +256,14 @@ def contest_problem(request, problem_id, contest_id):
 def upcoming_contest(request):
     return HttpResponse("Coming soon....  Wait till then")
 
-"""
+
 def ended_contest(request):
     data = {
         'contest_id': 1,
         "JAT": JAT,
     }
-    response = requests.post('http://127.0.0.1:8000/compiler/get_submissions_contest/', data=data).json()
+    response = requests.post('http://' + b_u_a + '/compiler/get_submissions_contest/', data=data).json()
+    cc = requests.post('http://mahbd.pythonanywhere.com/compiler/get_contest_details/', data=data).json()
     print(response)
     if not response['correct']:
         return HttpResponse(response['status'])
@@ -275,4 +277,3 @@ def ended_contest(request):
         time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
         result[submission[1] + '_' + str(submission[2])] = time
     return HttpResponse("Contest Has ended.. Thank you for your help.")
-"""

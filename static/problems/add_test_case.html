@@ -1,0 +1,13 @@
+{% extends 'base/problem_base.html' %}
+{% block content2 %}
+    <div class="container text-white">
+        <h6>Your code</h6>
+        <pre class="text-white">{{ result.cc }}</pre>
+        <form action="#" method="post">
+            {% csrf_token %}
+            <label for="inputs">Enter Your input</label>
+            <textarea name="inputs" id="inputs" class="form-control" rows="10"></textarea>
+            <button type="submit" class="btn-lg btn-outline-success">Save</button>
+        </form>
+    </div>
+{% endblock content2 %}

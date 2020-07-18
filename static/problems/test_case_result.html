@@ -1,0 +1,27 @@
+{% extends 'base/problem_base.html' %}
+{% block content2 %}
+    <div class="container text-white">
+        <h6>Your code</h6>
+        <pre class="text-white">{{ result.code }}</pre>
+        {% if result.correct == True %}
+            <table class="table table-dark text-white">
+                <thead>
+                <tr>
+                    <th scope="col">Input</th>
+                    <th scope="col">Output</th>
+                </tr>
+                </thead>
+                <tr>
+                    <th scope="col">
+                        <pre class="text-white">{{ result.process.0 }}</pre>
+                    </th>
+                    <th scope="col">
+                        <pre class="text-white">{{ result.process.1 }}</pre>
+                    </th>
+                </tr>
+            </table>
+        {% else %}
+            <h3 class="text-danger">Sorry. Check input and your code carefully.</h3>
+        {% endif %}
+    </div>
+{% endblock content2 %}

@@ -4,13 +4,24 @@
         {% for an in ann %}
             <h3>{{ an.text }}</h3>
         {% endfor %}
-        {% for problem in problem_list %}
-            <div class="card mb-3 text-dark">
-                <div class="card-header">
-                    <a class="h5" href="{% url 'problems:problem' problem.id %}">{{ problem.problem_name }}</a>
+        {% if contest_id == 0 %}
+            {% for problem in problem_list %}
+                <div class="card mb-3 text-dark">
+                    <div class="card-header">
+                        <a class="h5" href="{% url 'problems:problem' problem.id %}">{{ problem.problem_name }}</a>
+                    </div>
+                    <div class="card-body">{{ problem.problem_statement| truncatechars:50 }}</div>
                 </div>
-                <div class="card-body">{{ problem.problem_statement| truncatechars:50 }}</div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            {% for problem in problem_list %}
+                <div class="card mb-3 text-dark">
+                    <div class="card-header">
+                        <a class="h5" href="{% url 'problems:s_c_problem' problem.id contest_id %}">{{ problem.problem_name }}</a>
+                    </div>
+                    <div class="card-body">{{ problem.problem_statement| truncatechars:10 }}</div>
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
 {% endblock content2 %}

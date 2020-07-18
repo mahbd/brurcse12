@@ -11,7 +11,7 @@
                         <p>By: {{ contest.creator }}...Start: {{ contest.start_time }}...End: {{ contest.end_time }}</p>
                     </div>
                     <div class="card-body">
-                        <a href="#">{{ contest.contest_name }}</a>
+                        <a href="{% url 'problems:contest_problem' contest.id %}">{{ contest.contest_name }}</a>
                     </div>
                 </div>
             {% endfor %}

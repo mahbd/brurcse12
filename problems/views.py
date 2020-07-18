@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from mysite.settings import BASE_DIR
+from mysite.settings import JAT, BASE_DIR
 import pytz
 import requests
 from django.contrib.auth.decorators import login_required
@@ -8,10 +8,16 @@ from django.http import *
 from django.shortcuts import render, redirect
 from .models import ProbAnn
 
+b_u_a = 'mahbd.pythonanywhere.com'
+# b_u_a = '127.0.0.1:8000'
+
 
 def problems(request):
     ann = ProbAnn.objects.all()
-    problem_list = requests.get('http://mahbd.pythonanywhere.com/compiler/get_problem_list/').json()['problems']
+    data = {
+        "JAT": JAT,
+    }
+    problem_list = requests.post('http://' + b_u_a + '/compiler/get_problem_list/', data=data).json()['problems']
     print(problem_list)
     for m in problem_list:
         print(m['problem_name'])
@@ -19,17 +25,21 @@ def problems(request):
         'title': 'problems',
         'ann': ann,
         'problem_list': problem_list,
-
+        'contest_id': 0,
     }
     return render(request, 'problems/home.html', context)
 
 
 def problem(request, problem_id):
-    problem_info = requests.get('http://mahbd.pythonanywhere.com/compiler/get_problem=' + str(problem_id)).json()
+    data = {
+        "problem_id": problem_id,
+        "JAT": JAT
+    }
+    problem_info = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
     context = {
         'title': "problem",
         'problem': problem_info,
-        'base_d': BASE_DIR,
+        'contest_id': 0,
     }
     return render(request, 'problems/problem.html', context)
 
@@ -37,7 +47,11 @@ def problem(request, problem_id):
 def submission_result(request, problem_id):
     if request.method != 'POST':
         raise Http404
-    submission_code = request.POST['code']
+    try:
+        submission_code = request.POST['code']
+        contest_id = request.POST['contest_id']
+    except KeyError:
+        return HttpResponse("Bad input field")
     if request.user.is_authenticated:
         user_code = request.user.username
     else:
@@ -47,9 +61,10 @@ def submission_result(request, problem_id):
         "submission_code": submission_code,
         "user_code": user_code,
         "language": "cpp",
-        "contest_id": 0,
+        "contest_id": contest_id,
+        "JAT": JAT,
     }
-    res = requests.post('http://mahbd.pythonanywhere.com/compiler/', data=data).json()
+    res = requests.post('http://' + b_u_a + '/compiler/', data=data).json()
     print(res)
     if not res['correct']:
         return HttpResponse(res['status'])
@@ -63,7 +78,10 @@ def submission_result(request, problem_id):
 
 
 def contest_list(request):
-    res = requests.get('http://mahbd.pythonanywhere.com/compiler/get_contest_list/').json()
+    data = {
+        "JAT": JAT,
+    }
+    res = requests.post('http://' + b_u_a + '/compiler/get_contest_list/', data=data).json()
     upcoming_contests, running_contests, ended_contests = [], [], []
     res = res['contests']
     tz_dhaka = pytz.timezone('Asia/Dhaka')
@@ -96,6 +114,10 @@ def contest_list(request):
 
 @login_required
 def add_problem(request, cid):
+    if cid == 0:
+        hidden = False
+    else:
+        hidden = True
     if request.method == 'POST':
         data = {
             "problem_name": request.POST['pn'],
@@ -105,9 +127,10 @@ def add_problem(request, cid):
             "creator": request.user.username,
             "group": request.POST['group'],
             "correct_code": request.POST['cc'],
-            "hidden": True
+            "hidden": hidden,
+            "JAT": JAT,
         }
-        response = requests.post('http://mahbd.pythonanywhere.com/compiler/add_problem/', data=data).json()
+        response = requests.post('http://' + b_u_a + '/compiler/add_problem/', data=data).json()
         return redirect('problems:problem', response['id'])
     context = {
         'title': "add problem",
@@ -134,5 +157,61 @@ def get_file_snippets(request, file_name):
     return HttpResponse(res, content_type='application/javascript')
 
 
-def add_test_case(request):
-    return 0
+def add_test_case(request, problem_id):
+    if request.method == 'POST':
+        data = {
+            'problem_id': problem_id,
+            'inputs': request.POST['inputs'],
+        }
+        response = requests.post('http://127.0.0.1:8000/compiler/add_test_case/', data=data).json()
+        context = {
+            'result': response,
+        }
+        return render(request, 'problems/test_case_result.html', context)
+    code = requests.get('http://' + b_u_a + '/compiler/get_problem=' + str(problem_id)).json()
+    print(code)
+    context = {
+        'title': code['problem_name'],
+        'problem_id': problem_id,
+        'result': code,
+    }
+    return render(request, 'problems/add_test_case.html', context)
+
+
+def contest_problems(request, contest_id):
+    data = {
+        'contest_id': contest_id,
+        "JAT": JAT
+    }
+    problem_list = requests.post('http://' + b_u_a + '/compiler/get_contest_problems/', data=data).json()['problems']
+    for m in problem_list:
+        print(m['problem_name'])
+    context = {
+        'title': 'problems',
+        'ann': '',
+        'problem_list': problem_list,
+        'contest_id': contest_id,
+    }
+    return render(request, 'problems/home.html', context)
+
+
+def contest_problem(request, problem_id, contest_id):
+    data = {
+        "problem_id": problem_id,
+        "JAT": JAT,
+    }
+    problem_info = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
+    context = {
+        'title': "problem",
+        'problem': problem_info,
+        'contest_id': contest_id,
+    }
+    return render(request, 'problems/problem.html', context)
+
+
+def upcoming_contest(request):
+    return HttpResponse("Coming soon....  Wait till then")
+
+
+def ended_contest(request):
+    return HttpResponse("Contest Has ended.. Thank you for your help.")

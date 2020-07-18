@@ -109,6 +109,9 @@ EMAIL_HOST_PASSWORD = str(os.environ.get('MAHMUDULY2000_PASS'))
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+# Online Judge Info
+JAT = str(os.environ.get('JUDGE_ACCESS_TOKEN'))
+
 
 # Channel
 ASGI_APPLICATION = 'mysite.routing.application'

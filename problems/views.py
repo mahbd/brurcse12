@@ -259,7 +259,7 @@ def upcoming_contest(request):
 
 def ended_contest(request):
     data = {
-        'contest_id': 1,
+        'contest_id': 2,
         "JAT": JAT,
     }
     response = requests.post('http://' + b_u_a + '/compiler/get_submissions_contest/', data=data).json()
@@ -270,8 +270,13 @@ def ended_contest(request):
     tz_dhaka = pytz.timezone('Asia/Dhaka')
     for submission in submission_list:
         time = submission[0]
-        time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
+        time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%fZ")
         time = pytz.timezone('UTC').localize(time)
         time = time.astimezone(tz_dhaka)
         submission[0] = datetime.strftime(time, "%a %I:%M %P")
-    return HttpResponse("Contest Has ended.. Thank you for your help.")
+    submission_list.reverse()
+    context = {
+        'title': 'contest result',
+        'submission_list': submission_list,
+    }
+    return render(request, 'problems/contest_result.html', context)

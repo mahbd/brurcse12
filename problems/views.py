@@ -163,7 +163,7 @@ def add_test_case(request, problem_id):
             'problem_id': problem_id,
             'inputs': request.POST['inputs'],
         }
-        response = requests.post('http://127.0.0.1:8000/compiler/add_test_case/', data=data).json()
+        response = requests.post('http://' + b_u_a + '/compiler/add_test_case/', data=data).json()
         context = {
             'result': response,
         }

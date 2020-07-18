@@ -202,6 +202,9 @@ def add_test_case(request, problem_id):
         "JAT": JAT
     }
     code = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
+    if not code['correct']:
+        return HttpResponse(code['status'])
+    code = code['problem']
     print(code)
     context = {
         'title': code['problem_name'],

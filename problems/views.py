@@ -263,17 +263,15 @@ def ended_contest(request):
         "JAT": JAT,
     }
     response = requests.post('http://' + b_u_a + '/compiler/get_submissions_contest/', data=data).json()
-    cc = requests.post('http://mahbd.pythonanywhere.com/compiler/get_contest_details/', data=data).json()
     print(response)
     if not response['correct']:
         return HttpResponse(response['status'])
     submission_list = response['process']
-    result = {}
     tz_dhaka = pytz.timezone('Asia/Dhaka')
-    start_time = pytz.timezone('UTC').localize(datetime.strptime(cc['start_time'], "%Y-%m-%dT%H:%M:%SZ"))
-    start_time = start_time.astimezone(tz_dhaka)
     for submission in submission_list:
         time = submission[0]
         time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
-        result[submission[1] + '_' + str(submission[2])] = time
+        time = pytz.timezone('UTC').localize(time)
+        time = time.astimezone(tz_dhaka)
+        submission[0] = datetime.strftime(time, "%a %I:%M %P")
     return HttpResponse("Contest Has ended.. Thank you for your help.")

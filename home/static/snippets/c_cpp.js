@@ -31,7 +31,7 @@ define("ace/snippets/c_cpp", ["require", "exports", "module"], function (t, n, e
         "# stdio.h\nsnippet stdio.h\n\tstdio.h>${1:}${2}${3}\n" +
         "# iostream\nsnippet iostream\n\tiostream>${1:}${2}${3}\n" +
         "# math.h\nsnippet math.h\n\tmath.h${1:}${2}${3}\n" +
-        "# bits\\stdc++.h\nsnippet bits\\stdc++.h\n\tbits\\stdc++.h>${1:}${2}${3}\n" +
+        "# bits\/stdc++.h\nsnippet bits\/stdc++.h\n\tbits\/stdc++.h>${1:}${2}${3}\n" +
         "# main\nsnippet main\n\tmain(){${1:}} ${2}${3}${4}\n" +
         "# lambda (multi-line)\nsnippet lld\n\t[${1}](${2}){\n\t\t${3:/* code */}\n\t}${4}\n", n.scope = "c_cpp"
 

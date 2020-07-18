@@ -190,7 +190,11 @@ def add_test_case(request, problem_id):
             'result': response,
         }
         return render(request, 'problems/test_case_result.html', context)
-    code = requests.get('http://' + b_u_a + '/compiler/get_problem=' + str(problem_id)).json()
+    data = {
+        "problem_id": problem_id,
+        "JAT": JAT
+    }
+    code = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
     print(code)
     context = {
         'title': code['problem_name'],

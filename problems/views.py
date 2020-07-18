@@ -126,19 +126,30 @@ def add_problem(request, cid):
         hidden = False
     else:
         hidden = True
+    try:
+        problem_name = request.POST['pn']
+        problem_statement = request.POST['ps']
+        input_terms = request.POST['it']
+        output_terms = request.POST['ot']
+        group = request.POST['group']
+        correct_code = request.POST['cc']
+    except KeyError:
+        return HttpResponse("Error in forms")
     if request.method == 'POST':
         data = {
-            "problem_name": request.POST['pn'],
-            "problem_statement": request.POST['ps'],
-            "input_terms": request.POST['it'],
-            "output_terms": request.POST['ot'],
+            "problem_name": problem_name,
+            "problem_statement": problem_statement,
+            "input_terms": input_terms,
+            "output_terms": output_terms,
             "creator": request.user.username,
-            "group": request.POST['group'],
-            "correct_code": request.POST['cc'],
+            "group": group,
+            "correct_code": correct_code,
             "hidden": hidden,
             "JAT": JAT,
         }
         response = requests.post('http://' + b_u_a + '/compiler/add_problem/', data=data).json()
+        if not response['correct']:
+            return HttpResponse(response['status'])
         return redirect('problems:problem', response['id'])
     context = {
         'title': "add problem",
@@ -170,8 +181,11 @@ def add_test_case(request, problem_id):
         data = {
             'problem_id': problem_id,
             'inputs': request.POST['inputs'],
+            "JAT": JAT,
         }
         response = requests.post('http://' + b_u_a + '/compiler/add_test_case/', data=data).json()
+        if not response['correct']:
+            return HttpResponse(response['status'])
         context = {
             'result': response,
         }

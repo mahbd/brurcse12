@@ -15,5 +15,4 @@ urlpatterns = [
     path('add_test_case=<int:problem_id>/', views.add_test_case, name='add_test_case'),
     path('contest_problem=<int:problem_id>cid=<int:contest_id>/', views.contest_problem, name='s_c_problem'),
     path('upcoming_contest/', views.upcoming_contest, name='upcoming_contest'),
-    path('ended_contest/', views.ended_contest, name='ended_contest'),
 ]

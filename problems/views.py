@@ -240,8 +240,10 @@ def contest_problem(request, problem_id, contest_id):
         "JAT": JAT,
     }
     problem_info = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
+    print(problem_info)
     if not problem_info['correct']:
         return HttpResponse(problem_info['status'])
+    problem_info = problem_info['problem']
     context = {
         'title': "problem",
         'problem': problem_info,
@@ -253,7 +255,7 @@ def contest_problem(request, problem_id, contest_id):
 def upcoming_contest(request):
     return HttpResponse("Coming soon....  Wait till then")
 
-
+"""
 def ended_contest(request):
     data = {
         'contest_id': 1,
@@ -273,3 +275,4 @@ def ended_contest(request):
         time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
         result[submission[1] + '_' + str(submission[2])] = time
     return HttpResponse("Contest Has ended.. Thank you for your help.")
+"""

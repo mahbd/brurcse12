@@ -1,12 +1,15 @@
 import os
 from datetime import datetime
-from mysite.settings import JAT, BASE_DIR
+from mysite.settings import BASE_DIR
 import pytz
 import requests
 from django.contrib.auth.decorators import login_required
 from django.http import *
 from django.shortcuts import render, redirect
 from .models import ProbAnn
+from home.models import SecretKeys
+
+JAT = "SecretKeys.objects.get(name='JAT').key"
 
 b_u_a = 'mahbd.pythonanywhere.com'
 # b_u_a = '127.0.0.1:8000'
@@ -17,6 +20,7 @@ def problems(request):
     data = {
         "JAT": JAT,
     }
+    print("jat = " + JAT)
     problem_list = requests.post('http://' + b_u_a + '/compiler/get_problem_list/', data=data).json()
     if not problem_list['correct']:
         return HttpResponse(problem_list['status'])

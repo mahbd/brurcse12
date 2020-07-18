@@ -55,3 +55,11 @@ class AnnForm(ModelForm):
                 'required': "Don't Keep it blank"
             }
         }
+
+
+class SecretKeys(models.Model):
+    name = models.CharField(max_length=100)
+    key = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name

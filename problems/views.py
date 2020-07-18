@@ -255,4 +255,21 @@ def upcoming_contest(request):
 
 
 def ended_contest(request):
+    data = {
+        'contest_id': 1,
+        "JAT": JAT,
+    }
+    response = requests.post('http://127.0.0.1:8000/compiler/get_submissions_contest/', data=data).json()
+    print(response)
+    if not response['correct']:
+        return HttpResponse(response['status'])
+    submission_list = response['process']
+    result = {}
+    tz_dhaka = pytz.timezone('Asia/Dhaka')
+    start_time = pytz.timezone('UTC').localize(datetime.strptime(cc['start_time'], "%Y-%m-%dT%H:%M:%SZ"))
+    start_time = start_time.astimezone(tz_dhaka)
+    for submission in submission_list:
+        time = submission[0]
+        time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
+        result[submission[1] + '_' + str(submission[2])] = time
     return HttpResponse("Contest Has ended.. Thank you for your help.")

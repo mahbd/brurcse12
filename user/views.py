@@ -113,13 +113,14 @@ def reset_pass_form(request):
             new_tok.save()
             message = "We are sorry that you forgot your password. But don't worry, you can change it now. click the " \
                       "link to reset brurcse12.herokuapp.com/user/reset_pass/" + token
-            send_mail(
+            khk = send_mail(
                 'Reset password',
                 message,
                 EMAIL_HOST_USER,
                 [user.email],
-                fail_silently=True
+                fail_silently=False
             )
+            print(khk)
             context = {
                 'title': 'success',
                 'class': 'alert-success h3',

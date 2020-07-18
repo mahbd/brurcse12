@@ -12,6 +12,8 @@ from home.models import SecretKeys
 JAT = SecretKeys.objects.get(name='JAT').key
 
 b_u_a = 'mahbd.pythonanywhere.com'
+
+
 # b_u_a = '127.0.0.1:8000'
 
 
@@ -42,6 +44,8 @@ def problem(request, problem_id):
         "JAT": JAT
     }
     problem_info = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
+    print(problem_info)
+    problem_info = problem_info['problem']
     if not problem_info['correct']:
         return HttpResponse(problem_info['status'])
     context = {
@@ -90,6 +94,8 @@ def contest_list(request):
         "JAT": JAT,
     }
     res = requests.post('http://' + b_u_a + '/compiler/get_contest_list/', data=data).json()
+    if not res['correct']:
+        return HttpResponse(res['status'])
     upcoming_contests, running_contests, ended_contests = [], [], []
     res = res['contests']
     tz_dhaka = pytz.timezone('Asia/Dhaka')
@@ -148,6 +154,7 @@ def add_problem(request, cid):
             "JAT": JAT,
         }
         response = requests.post('http://' + b_u_a + '/compiler/add_problem/', data=data).json()
+        print(response)
         if not response['correct']:
             return HttpResponse(response['status'])
         return redirect('problems:problem', response['id'])
@@ -209,7 +216,10 @@ def contest_problems(request, contest_id):
         'contest_id': contest_id,
         "JAT": JAT
     }
-    problem_list = requests.post('http://' + b_u_a + '/compiler/get_contest_problems/', data=data).json()['problems']
+    problem_list = requests.post('http://' + b_u_a + '/compiler/get_contest_problems/', data=data).json()
+    if not problem_list['correct']:
+        return HttpResponse(problem_list['correct'])
+    problem_list = problem_list['problems']
     for m in problem_list:
         print(m['problem_name'])
     context = {
@@ -227,6 +237,8 @@ def contest_problem(request, problem_id, contest_id):
         "JAT": JAT,
     }
     problem_info = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
+    if not problem_info['correct']:
+        return HttpResponse(problem_info['status'])
     context = {
         'title': "problem",
         'problem': problem_info,

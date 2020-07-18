@@ -45,9 +45,9 @@ def problem(request, problem_id):
     }
     problem_info = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
     print(problem_info)
-    problem_info = problem_info['problem']
     if not problem_info['correct']:
         return HttpResponse(problem_info['status'])
+    problem_info = problem_info['problem']
     context = {
         'title': "problem",
         'problem': problem_info,

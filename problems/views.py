@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from .models import ProbAnn
 from home.models import SecretKeys
 
-JAT = "SecretKeys.objects.get(name='JAT').key"
+JAT = SecretKeys.objects.get(name='JAT').key
 
 b_u_a = 'mahbd.pythonanywhere.com'
 # b_u_a = '127.0.0.1:8000'

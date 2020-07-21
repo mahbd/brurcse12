@@ -38,6 +38,7 @@ def problems(request):
     return render(request, 'problems/home.html', context)
 
 
+@login_required
 def problem(request, problem_id):
     data = {
         "problem_id": problem_id,
@@ -235,6 +236,7 @@ def contest_problems(request, contest_id):
     return render(request, 'problems/home.html', context)
 
 
+@login_required
 def contest_problem(request, problem_id, contest_id):
     data = {
         "problem_id": problem_id,

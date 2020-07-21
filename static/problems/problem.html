@@ -13,6 +13,14 @@
         <p>{{ problem.input_terms }}</p>
         <h4>Output</h4>
         <p>{{ problem.output_terms }}</p>
+        <table class="table table-dark text-white">
+            <tr>
+                <th scope="col">
+                    <pre class="text-white">{{ problem.e_input }}</pre>
+                <th scope="col">
+                    <pre class="text-white">{{ problem.e_output }}</pre>
+            </tr>
+        </table>
         <h1></h1>
         <form action="{% url 'problems:sub_res' problem.id %}" method="post" name="codeForm">
             {% csrf_token %}

@@ -5,23 +5,34 @@
             <h3>{{ an.text }}</h3>
         {% endfor %}
         {% if contest_id == 0 %}
-            {% for problem in problem_list %}
-                <div class="card mb-3 text-dark">
-                    <div class="card-header">
-                        <a class="h5" href="{% url 'problems:problem' problem.id %}">{{ problem.problem_name }}</a>
-                    </div>
-                    <div class="card-body">{{ problem.problem_statement| truncatechars:50 }}</div>
-                </div>
-            {% endfor %}
+            <table class="table table-dark text-white table-bordered">
+                {% for problem in problem_list %}
+                    <tr>
+                        <th>
+                            <a class="h5" href="{% url 'problems:problem' problem.id %}">{{ problem.problem_name }}</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>{{ problem.problem_statement| truncatechars:50 }}</p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
         {% else %}
-            {% for problem in problem_list %}
-                <div class="card mb-3 text-dark">
-                    <div class="card-header">
-                        <a class="h5" href="{% url 'problems:s_c_problem' problem.id contest_id %}">{{ problem.problem_name }}</a>
-                    </div>
-                    <div class="card-body">{{ problem.problem_statement| truncatechars:10 }}</div>
-                </div>
-            {% endfor %}
+            <table class="table table-dark text-white table-bordered">
+                {% for problem in problem_list %}
+                    <tr>
+                        <th>
+                            <a class="h5"
+                               href="{% url 'problems:s_c_problem' problem.id contest_id %}">{{ problem.problem_name }}</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td><p>{{ problem.problem_statement| truncatechars:10 }}</p></td>
+                    </tr>
+                {% endfor %}
+            </table>
         {% endif %}
     </div>
 {% endblock content2 %}

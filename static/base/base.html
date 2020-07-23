@@ -31,7 +31,7 @@
             class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="nav-bar01">
         <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'home:home' %}">Home</a>
-    <!--
+        <!--
         <a class="font-size20 btn-outline-success text-white nav-item padding10"
            href="{% url 'home:announcement' %}">Announcement</a> -->
         {% if unread == 1 %}
@@ -80,16 +80,16 @@
 <br>
 
 <!-- End of different part. This was for home -->
-<!---
-<footer class="fixed-bottom bg-dark text-white row font-weight-bold " size="22">
-    <div class="container-fluid row">
-        <div class="col-auto">
-            <em>Designed by</em> <br>
-            <em>Mahmudul Alam</em> <br>
+<div class="d-none d-sm-block">
+    <footer class="fixed-bottom bg-dark text-white row font-weight-bold " size="22">
+        <div class="container-fluid row">
+            <div class="col-auto">
+                <em>Designed by</em> <br>
+                <em>Mahmudul Alam</em> <br>
+            </div>
         </div>
-    </div>
-</footer>
--->
+    </footer>
+</div>
 <script>
     function validateForm() {
         const x = document.forms["MyForm"]["Text30"].value;

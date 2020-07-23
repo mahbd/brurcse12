@@ -12,9 +12,15 @@ from home.models import SecretKeys
 JAT = SecretKeys.objects.get(name='JAT').key
 
 b_u_a = 'mahbd.pythonanywhere.com'
-
-
 # b_u_a = '127.0.0.1:8000'
+
+
+def time_convert(time):
+    tz_dhaka = pytz.timezone('Asia/Dhaka')
+    time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%fZ")
+    time = pytz.timezone('UTC').localize(time)
+    time = time.astimezone(tz_dhaka)
+    return time
 
 
 def problems(request):
@@ -129,10 +135,6 @@ def contest_list(request):
 
 @login_required
 def add_problem(request, cid):
-    if cid == 0:
-        hidden = False
-    else:
-        hidden = True
     if request.method == 'POST':
         try:
             problem_name = request.POST['pn']
@@ -141,8 +143,13 @@ def add_problem(request, cid):
             output_terms = request.POST['ot']
             group = request.POST['group']
             correct_code = request.POST['cc']
+            is_contest = request.POST['is_con']
         except KeyError:
             return HttpResponse("Error in forms")
+        if int(is_contest):
+            hidden = True
+        else:
+            hidden = False
         data = {
             "problem_name": problem_name,
             "problem_statement": problem_statement,
@@ -269,12 +276,8 @@ def ended_contest(request):
     if not response['correct']:
         return HttpResponse(response['status'])
     submission_list = response['process']
-    tz_dhaka = pytz.timezone('Asia/Dhaka')
     for submission in submission_list:
-        time = submission[0]
-        time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%fZ")
-        time = pytz.timezone('UTC').localize(time)
-        time = time.astimezone(tz_dhaka)
+        time = time_convert(submission[0])
         submission[0] = datetime.strftime(time, "%a %I:%M %P")
     submission_list.reverse()
     context = {
@@ -282,3 +285,42 @@ def ended_contest(request):
         'submission_list': submission_list,
     }
     return render(request, 'problems/contest_result.html', context)
+
+
+def all_submissions(request):
+    data = {
+        "JAT": "KjT59YUvvS",
+    }
+    res = requests.post('http://' + b_u_a + '/compiler/all_submissions/', data=data).json()
+    if not res['correct']:
+        return HttpResponse(res['status'])
+    sub_list = res['process']
+    for sub in sub_list:
+        time = time_convert(sub[0])
+        sub[0] = datetime.strftime(time, "%D %I:%M %P")
+    context = {
+        "title": "All submissions",
+        "submission_list": sub_list,
+    }
+    return render(request, 'problems/all_submissions.html', context)
+
+
+@login_required
+def submission(request, sub_id):
+    data = {
+        "JAT": "KjT59YUvvS",
+        "submission_id": sub_id,
+    }
+    response = requests.post('http://' + b_u_a + '/compiler/get_submission/', data=data).json()
+    if not response['correct']:
+        return HttpResponse(response['status'])
+    if response['restricted'] == 'submitter':
+        if request.user.username != response['process']['submitter_code']:
+            return HttpResponse('Contest is running or Internal error')
+    time = time_convert(response['process']['date'])
+    response['process']['date'] = datetime.strftime(time, "%D %I:%M %P")
+    context = {
+        "title": "submission",
+        "submission": response['process']
+    }
+    return render(request, 'problems/submission.html', context)

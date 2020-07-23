@@ -4,8 +4,9 @@
         <nav class="navbar navbar-dark bg-dark text-white">
             <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'problems:home' %}">Problems</a>
             <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'problems:contest_list' %}">Contest</a>
-            <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'problems:add_problem' 0 %}">Add Problem</a>
-            <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'problems:ended_contest' %}">Result</a>
+            <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'problems:add_problem' 0 %}">Add
+                Problem</a>
+            <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'problems:all_submissions' %}">Submissions</a>
         </nav>
         {% block content2 %}{% endblock content2 %}
     </div>

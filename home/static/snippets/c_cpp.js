@@ -25,8 +25,8 @@ define("ace/snippets/c_cpp", ["require", "exports", "module"], function (t, n, e
         "# foreach\nsnippet fore\n\tfor (${1:auto} ${2:i} : ${3:container}) {\n\t\t${4:/* code */}\n\t}${5}\n" +
         "# iterator\nsnippet iter\n\tfor (${1:vector}<${2:type}>::${3:const_iterator} ${4:i} = ${5:container}.begin(); $4 != $5.end(); ++$4) {\n\t\t${6}\n\t}${7}\n\n" +
         "# auto iterator\nsnippet itera\n\tfor (auto ${1:i} = $1.begin(); $1 != $1.end(); ++$1) {\n\t\t${2:cout << *$1 << endl;}\n\t}${3}\n##\n## Lambdas\n" +
-        "# printf\nsnippet printf\n\tprintf(\"${1:}${2};${3}\n" +
-        "# scanf\nsnippet scanf\n\tscanf(\"${1:}${2};${3}\n" +
+        "# printf\nsnippet printf\n\tprintf(\"${1:}\")${2};${3}\n" +
+        "# scanf\nsnippet scanf\n\tscanf(\"${1:}\")${2};${3}\n" +
         "# include\nsnippet include\n\tinclude<${1:} ${2}${3}\n" +
         "# stdio.h\nsnippet stdio.h\n\tstdio.h>${1:}${2}${3}\n" +
         "# iostream\nsnippet iostream\n\tiostream>${1:}${2}${3}\n" +

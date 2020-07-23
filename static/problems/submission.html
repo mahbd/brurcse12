@@ -1,0 +1,11 @@
+{% extends 'base/problem_base.html' %}
+{% block content2 %}
+    <div class="text-white">
+        <p>Name: {{ submission.submitter_code }}</p>
+        <p>Problem name: {{ submission.problem_name }}</p>
+        <p>Status: {{ submission.verdict }}</p>
+        <p>Date: {{ submission.date }}</p>
+        <p>Code:</p>
+        <pre class="text-white">{{ submission.code }}</pre>
+    </div>
+{% endblock content2 %}

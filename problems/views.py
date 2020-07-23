@@ -2,6 +2,8 @@ import os
 from datetime import datetime, timezone
 from operator import itemgetter
 
+from django.core.paginator import Paginator
+
 from mysite.settings import BASE_DIR
 import pytz
 import requests
@@ -347,6 +349,12 @@ def all_submissions(request):
     for sub in sub_list:
         time = time_convert(sub[0])
         sub[0] = datetime.strftime(time, "%D %I:%M %P")
+    paginator = Paginator(sub_list, 25)
+    try:
+        page_number = request.GET.get('page')
+    except KeyError:
+        page_number = 1
+    sub_list = paginator.get_page(page_number)
     context = {
         "title": "All submissions",
         "submission_list": sub_list,

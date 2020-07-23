@@ -342,7 +342,7 @@ def standing(request, contest_id):
 
 def all_submissions(request):
     data = {
-        "JAT": "KjT59YUvvS",
+        "JAT": JAT,
     }
     res = requests.post('http://' + b_u_a + '/compiler/all_submissions/', data=data).json()
     if not res['correct']:
@@ -367,7 +367,7 @@ def all_submissions(request):
 @login_required
 def submission(request, sub_id):
     data = {
-        "JAT": "KjT59YUvvS",
+        "JAT": JAT,
         "submission_id": sub_id,
     }
     response = requests.post('http://' + b_u_a + '/compiler/get_submission/', data=data).json()

@@ -1,5 +1,7 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
+from operator import itemgetter
+
 from mysite.settings import BASE_DIR
 import pytz
 import requests
@@ -12,6 +14,8 @@ from home.models import SecretKeys
 JAT = SecretKeys.objects.get(name='JAT').key
 
 b_u_a = 'mahbd.pythonanywhere.com'
+
+
 # b_u_a = '127.0.0.1:8000'
 
 
@@ -266,12 +270,42 @@ def contest_problem(request, problem_id, contest_id):
 
 
 def upcoming_contest(request):
-    return HttpResponse("Coming soon....  Wait till then")
-
-
-def ended_contest(request):
     data = {
-        'contest_id': 2,
+        'contest_id': 3,
+        "JAT": JAT,
+    }
+    response = requests.post('http://' + b_u_a + '/compiler/get_contest_details/', data=data).json()
+    if not response['correct']:
+        return HttpResponse(response['status'])
+    context = {
+        "date": response['start_time']
+    }
+    return render(request, 'problems/upcoming_contest.html', context)
+
+
+def ended_contest(request, contest_id):
+    data = {
+        'contest_id': contest_id,
+        "JAT": JAT
+    }
+    problem_list = requests.post('http://' + b_u_a + '/compiler/get_contest_problems/', data=data).json()
+    if not problem_list['correct']:
+        return HttpResponse(problem_list['correct'])
+    problem_list = problem_list['problems']
+    problem_list.reverse()
+    for m in problem_list:
+        print(m['problem_name'])
+    context = {
+        "contest_id": -1,
+        "f_c_id": contest_id,
+        "problem_list": problem_list
+    }
+    return render(request, 'problems/home.html', context)
+
+
+def standing(request, contest_id):
+    data = {
+        'contest_id': contest_id,
         "JAT": JAT,
     }
     response = requests.post('http://' + b_u_a + '/compiler/get_submissions_contest/', data=data).json()
@@ -279,15 +313,27 @@ def ended_contest(request):
     if not response['correct']:
         return HttpResponse(response['status'])
     submission_list = response['process']
-    for submission in submission_list:
-        time = time_convert(submission[0])
-        submission[0] = datetime.strftime(time, "%a %I:%M %P")
     submission_list.reverse()
+    info, time_calc, prob_calc = {}, {}, {}
+    final_info = []
+    for sub in submission_list:
+        time = time_convert(sub[0])
+        info[sub[1] + '___' + sub[2]] = (time - datetime(1970, 1, 1, tzinfo=timezone.utc)).total_seconds()
+    for prob in info:
+        time_calc[prob.split('___')[0]] = 0
+        prob_calc[prob.split('___')[0]] = 0
+    for prob in info:
+        time_calc[prob.split('___')[0]] += info[prob]
+        prob_calc[prob.split('___')[0]] += 1
+    for per in time_calc:
+        final_info.append([per, prob_calc[per], time_calc[per]])
+    final_info.sort(key=itemgetter(2))
+    final_info.sort(key=itemgetter(1), reverse=True)
     context = {
         'title': 'contest result',
-        'submission_list': submission_list,
+        'results': final_info,
     }
-    return render(request, 'problems/contest_result.html', context)
+    return render(request, 'problems/standing.html', context)
 
 
 def all_submissions(request):

@@ -4,7 +4,10 @@
         {% for an in ann %}
             <h3>{{ an.text }}</h3>
         {% endfor %}
-        {% if contest_id == 0 %}
+        {% if contest_id == 0 or contest_id == -1 %}
+            {% if contest_id == -1 %}
+                <a href="{% url 'problems:standing' f_c_id %}" class="btn-lg btn-success">Standings</a>
+            {% endif %}
             <table class="table table-dark text-white table-bordered">
                 {% for problem in problem_list %}
                     <tr>
@@ -20,6 +23,7 @@
                 {% endfor %}
             </table>
         {% else %}
+            <a href="{% url 'problems:standing' contest_id %}" class="btn-lg btn-success">Standings</a>
             <table class="table table-dark text-white table-bordered">
                 {% for problem in problem_list %}
                     <tr>

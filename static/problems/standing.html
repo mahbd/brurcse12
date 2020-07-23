@@ -6,15 +6,13 @@
             <thead>
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Date</th>
-                <th scope="col">Problem Name</th>
+                <th scope="col">Solve</th>
             </tr>
             </thead>
-            {% for submission in submission_list %}
+            {% for result in results %}
                 <tr>
-                    <td>{{ submission.1 }}</td>
-                    <td>{{ submission.0 }}</td>
-                    <td>{{ submission.2 }}</td>
+                    <td>{{ result.0 }}</td>
+                    <td>{{ result.1 }}</td>
                 </tr>
             {% endfor %}
         </table>

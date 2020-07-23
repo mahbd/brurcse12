@@ -19,4 +19,5 @@ urlpatterns = [
     path('all_submissions/', views.all_submissions, name='all_submissions'),
     path('submission=<int:sub_id>/', views.submission, name='submission'),
     path('standing=<int:contest_id>/', views.standing, name='standing'),
+    path('test_case_list=<int:problem_id>/', views.test_case_list, name='test_case_list'),
 ]

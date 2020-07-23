@@ -262,7 +262,7 @@ def contest_problem(request, problem_id, contest_id):
         return HttpResponse(problem_info['status'])
     context = {
         'title': "problem",
-        'problem': problem_info,
+        'problem': problem_info['problem'],
         'contest_id': contest_id,
     }
     return render(request, 'problems/problem.html', context)
@@ -378,3 +378,18 @@ def submission(request, sub_id):
         "submission": response['process']
     }
     return render(request, 'problems/submission.html', context)
+
+
+def test_case_list(request, problem_id):
+    data = {
+        "problem_id": problem_id,
+        "JAT": JAT
+    }
+    response = requests.post('http://' + b_u_a + '/compiler/get_ptc/', data=data).json()
+    if not response['correct']:
+        return HttpResponse(response['status'])
+    context = {
+        "title": "test case list",
+        "test_list": response['process']
+    }
+    return render(request, 'problems/test_case_list.html', context)

@@ -50,7 +50,6 @@ def problems(request):
     return render(request, 'problems/home.html', context)
 
 
-@login_required
 def problem(request, problem_id):
     data = {
         "problem_id": problem_id,
@@ -69,6 +68,7 @@ def problem(request, problem_id):
     return render(request, 'problems/problem.html', context)
 
 
+@login_required
 def submission_result(request, problem_id):
     if request.method != 'POST':
         raise Http404
@@ -199,7 +199,10 @@ def get_file_snippets(request, file_name):
     return HttpResponse(res, content_type='application/javascript')
 
 
+@login_required
 def add_test_case(request, problem_id):
+    if not request.user.is_staff:
+        return Http404
     if request.method == 'POST':
         data = {
             'problem_id': problem_id,
@@ -251,7 +254,6 @@ def contest_problems(request, contest_id):
     return render(request, 'problems/home.html', context)
 
 
-@login_required
 def contest_problem(request, problem_id, contest_id):
     data = {
         "problem_id": problem_id,
@@ -271,9 +273,9 @@ def contest_problem(request, problem_id, contest_id):
     return render(request, 'problems/problem.html', context)
 
 
-def upcoming_contest(request):
+def upcoming_contest(request, contest_id):
     data = {
-        'contest_id': 3,
+        'contest_id': contest_id,
         "JAT": JAT,
     }
     response = requests.post('http://' + b_u_a + '/compiler/get_contest_details/', data=data).json()

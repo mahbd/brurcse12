@@ -32,7 +32,7 @@
                         </div>
                     {% else %}
                         <div class="card-body">
-                            <a href="{% url 'problems:upcoming_contest' %}">{{ contest.contest_name }}</a>
+                            <a href="{% url 'problems:upcoming_contest' contest.id %}">{{ contest.contest_name }}</a>
                         </div>
                     {% endif %}
                 </div>

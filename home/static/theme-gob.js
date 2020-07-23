@@ -16,7 +16,6 @@ color: #00FF00\
 }\
 .ace-gob .ace_cursor {\
 border-color: rgba(16, 248, 255, 0.90);\
-background-color: rgba(16, 240, 248, 0.70);\
 opacity: 0.4;\
 }\
 .ace-gob .ace_marker-layer .ace_selection {\

@@ -1,9 +1,7 @@
 import os
 from datetime import datetime, timezone
 from operator import itemgetter
-
 from django.core.paginator import Paginator
-
 from mysite.settings import BASE_DIR
 import pytz
 import requests

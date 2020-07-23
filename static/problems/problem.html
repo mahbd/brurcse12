@@ -2,7 +2,7 @@
 {% load static %}
 {% block content2 %}
     <div class="container text-white">
-        {% if problem.creator == user.username %}
+        {% if user.is_staff %}
             <div class="bg-info"><p>Add more powerful test case to make your problem powerful. Due to hardware
                 restrictions don't add more than 10 test case which may make judging impossible.</p></div>
             <a href="{% url 'problems:add_test_case' problem.id %}" class="btn-lg btn-outline-success">Add TestCase</a>

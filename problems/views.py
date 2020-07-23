@@ -256,6 +256,7 @@ def contest_problem(request, problem_id, contest_id):
     if not problem_info['correct']:
         return HttpResponse(problem_info['status'])
     problem_info = problem_info['problem']
+    problem_info.reverse()
     context = {
         'title': "problem",
         'problem': problem_info,

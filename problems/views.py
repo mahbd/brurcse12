@@ -144,6 +144,7 @@ def add_problem(request, cid):
             group = request.POST['group']
             correct_code = request.POST['cc']
             is_contest = request.POST['is_con']
+            c_prob_id = request.POST['c_prob_id']
         except KeyError:
             return HttpResponse("Error in forms")
         if int(is_contest):
@@ -159,6 +160,7 @@ def add_problem(request, cid):
             "group": group,
             "correct_code": correct_code,
             "hidden": hidden,
+            "c_prob_id": c_prob_id,
             "JAT": JAT,
         }
         response = requests.post('http://' + b_u_a + '/compiler/add_problem/', data=data).json()

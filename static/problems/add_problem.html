@@ -4,7 +4,7 @@
         <h2>Add problem</h2>
         <form action="{% url 'problems:add_problem' contest_id %}" method="post">
             {% csrf_token %}
-            <label for="pn">Problem name</label><input type="text" id="pn" name="pn">
+            <label for="pn">Problem name</label><input type="text" id="pn" name="pn"><br>
             <label for="ps">Problem Statement</label>
             <textarea name="ps" id="ps" class="form-control" rows="8"></textarea>
             <label for="it">Input terms</label>
@@ -24,6 +24,9 @@
                 <option value="1">Yes</option>
                 <option value="0">No</option>
             </select>
+            <label for="c_prob_id"> Contest Problem serial (if contest):</label>
+                <input type="text" value="A" name="c_prob_id" id="c_prob_id">
+            <br>
             <input type="hidden" value="{{ contest_id }}">
             <button type="submit" class="btn-lg btn-outline-success">Save</button>
         </form>

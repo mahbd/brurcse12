@@ -242,7 +242,6 @@ def contest_problems(request, contest_id):
     if not problem_list['correct']:
         return HttpResponse(problem_list['correct'])
     problem_list = problem_list['problems']
-    problem_list.reverse()
     for m in problem_list:
         print(m['problem_name'])
     context = {
@@ -263,7 +262,6 @@ def contest_problem(request, problem_id, contest_id):
     print(problem_info)
     if not problem_info['correct']:
         return HttpResponse(problem_info['status'])
-    problem_info = problem_info['problem']
     context = {
         'title': "problem",
         'problem': problem_info,
@@ -281,7 +279,8 @@ def upcoming_contest(request, contest_id):
     if not response['correct']:
         return HttpResponse(response['status'])
     context = {
-        "date": response['start_time']
+        "date": response['start_time'],
+        "name": response['contest_name']
     }
     return render(request, 'problems/upcoming_contest.html', context)
 

@@ -370,7 +370,7 @@ def submission(request, sub_id):
         return HttpResponse(response['status'])
     if response['restricted'] == 'submitter':
         if request.user.username != response['process']['submitter_code']:
-            return HttpResponse('Contest is running or Internal error')
+            return HttpResponse('Contest is running')
     time = time_convert(response['process']['date'])
     response['process']['date'] = datetime.strftime(time, "%D %I:%M %P")
     context = {

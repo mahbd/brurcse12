@@ -369,7 +369,9 @@ def submission(request, sub_id):
     if not response['correct']:
         return HttpResponse(response['status'])
     if response['restricted'] == 'submitter':
-        if request.user.username != response['process']['submitter_code']:
+        if request.user.is_staff:
+            pass
+        elif request.user.username != response['process']['submitter_code']:
             return HttpResponse('Contest is running')
     time = time_convert(response['process']['date'])
     response['process']['date'] = datetime.strftime(time, "%D %I:%M %P")

@@ -13,8 +13,8 @@
             {% for test in test_list %}
                 <tr>
                     <td>{{ test.2 }}</td>
-                    <td><pre class="text-white">{{ test.0 }}</pre></td>
-                    <td><pre class="text-white">{{ test.1 }}</pre></td>
+                    <td><pre class="text-white">{{ test.0|truncatechars:75 }}</pre></td>
+                    <td><pre class="text-white">{{ test.1|truncatechars:75 }}</pre></td>
                 </tr>
             {% endfor %}
         </table>

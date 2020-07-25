@@ -24,13 +24,13 @@
                 {% for test_case in result.process %}
                     <tr>
                         <th scope="col">
-                            <pre class="text-white">{{ test_case.out.0 }}</pre>
+                            <pre class="text-white">{{ test_case.out.0|truncatechars:75 }}</pre>
                         </th>
                         <th scope="col">
-                            <pre class="text-white">{{ test_case.out.2 }}</pre>
+                            <pre class="text-white">{{ test_case.out.2|truncatechars:75 }}</pre>
                         </th>
                         <th scope="col">
-                            <pre class="text-white">{{ test_case.out.1 }}</pre>
+                            <pre class="text-white">{{ test_case.out.1|truncatechars:75 }}</pre>
                         </th>
                     </tr>
                 {% endfor %}

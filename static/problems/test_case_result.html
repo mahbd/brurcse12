@@ -13,10 +13,10 @@
                 </thead>
                 <tr>
                     <th scope="col">
-                        <pre class="text-white">{{ result.process.0 }}</pre>
+                        <pre class="text-white">{{ result.process.0|truncatechars:75 }}</pre>
                     </th>
                     <th scope="col">
-                        <pre class="text-white">{{ result.process.1 }}</pre>
+                        <pre class="text-white">{{ result.process.1|truncatechars:75 }}</pre>
                     </th>
                 </tr>
             </table>

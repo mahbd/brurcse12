@@ -2,6 +2,26 @@ import requests
 from django.shortcuts import render, redirect
 from .models import UriInfo
 from bs4 import BeautifulSoup as bs
+import threading
+
+
+def uri_point_update(info):
+    url = info.profile_url
+    response = requests.get(url).content
+    page = bs(response, 'html.parser')
+    stat = page.findAll('li')
+    point, solved = False, False
+    for m in stat:
+        if m.text.find('Points:') != -1:
+            point = m.text[8:].strip()
+            print(point)
+        if m.text.find('Solved:') != -1:
+            solved = m.text[8:].strip()
+            print(solved)
+            break
+    info.solves = int(solved)
+    info.points = point
+    info.save()
 
 
 def uri_info(request):
@@ -16,20 +36,6 @@ def uri_info(request):
 def update_uri_points(request):
     all_info = UriInfo.objects.all()
     for info in all_info:
-        url = info.profile_url
-        response = requests.get(url).content
-        page = bs(response, 'html.parser')
-        stat = page.findAll('li')
-        point, solved = False, False
-        for m in stat:
-            if m.text.find('Points:') != -1:
-                point = m.text[8:].strip()
-                print(point)
-            if m.text.find('Solved:') != -1:
-                solved = m.text[8:].strip()
-                print(solved)
-                break
-        info.solves = int(solved)
-        info.points = point
-        info.save()
+        thread = threading.Thread(target=uri_point_update, args=[info])
+        thread.start()
     return redirect('jInfo:home')

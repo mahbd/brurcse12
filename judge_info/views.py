@@ -39,3 +39,7 @@ def update_uri_points(request):
         thread = threading.Thread(target=uri_point_update, args=[info])
         thread.start()
     return redirect('jInfo:home')
+
+
+def cf_problem(request, exclude=False):
+    return exclude;

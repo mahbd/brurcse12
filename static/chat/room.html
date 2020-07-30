@@ -1,10 +1,13 @@
 {% extends 'base/message_base.html' %}
+{% load custom_tags %}
 {% block content_message %}
     <label for="chat-log"></label>
     <div class="col-md-6">
         <label for="chat-message-input"></label>
         <input id="chat-message-input" type="text" class="form-control"><br>
-        <input id="chat-message-submit" type="button" value="Send">
+        <input id="chat-message-submit" class="btn-lg btn-outline-success" type="button" value="Send">
+        <p id="recipient_id" hidden>{{ recipient_id }}</p>
+        <p id="user_id" hidden>{{ user.id }}</p>
         {{ room_name|json_script:"room-name" }}
         <div id="chat">
             {% for message_obj in message_list_obj %}
@@ -12,13 +15,15 @@
                     <div class="row">
                         <div class="col"></div>
                         <div class="ml-auto"><p class="btn-success rounded">
-                            <small>{{ message_obj.sender | get_name }} {{ message_obj.sent_at | date:"D P" }}</small><br>{{ message_obj.message }}</p></div>
+                            <small>{{ message_obj.sender | get_name }} {{ message_obj.sent_at | date:"D P" }}</small><br>{{ message_obj.message }}
+                        </p></div>
 
                     </div>
                 {% else %}
                     <div class="row">
                         <div class="col-auto"><p class="btn-primary rounded">
-                            <small>{{ message_obj.sender | get_name }} {{ message_obj.sent_at | date:"D P" }}</small><br>{{ message_obj.message }}</p></div>
+                            <small>{{ message_obj.sender | get_name }} {{ message_obj.sent_at | date:"D P" }}</small><br>{{ message_obj.message }}
+                        </p></div>
                         <div class="col"></div>
                     </div>
                 {% endif %}
@@ -43,7 +48,7 @@
     </div>
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
-        var ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
+        const ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
         const chatSocket = new WebSocket(
             ws_scheme + '://'
             + window.location.host
@@ -80,7 +85,7 @@
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             const sender_id = {{ user.id }};
-            const recipient_id = {{ recipient_id }};
+            const recipient_id = document.getElementById("recipient_id").innerText;
             chatSocket.send(JSON.stringify({
                 'message': message,
                 'sender_id': sender_id,

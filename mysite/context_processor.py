@@ -1,4 +1,4 @@
-from message.models import LastMessage
+from chat.models import LastMessage
 
 
 def unread_check(request):

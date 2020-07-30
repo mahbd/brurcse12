@@ -1,0 +1,23 @@
+{% extends 'base/judge_base.html' %}
+{% block content2 %}
+    <table class="table table-dark">
+        <thead>
+        <tr>
+            <th scope="col">Problem name</th>
+            {% for person in all_person %}
+            <th scope="col">{{ all_person.person }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for problem in all_problem %}
+            <tr>
+                <td>{{ problem.problem_name }}</td>
+                {% for person in all_person %}
+                    <td>{% if person in problem.solvers %}YES{% else %}NO{% endif %}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock content2 %}

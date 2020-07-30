@@ -2,9 +2,8 @@
 {% block content %}
     <div class="container text-white">
         <nav class="navbar navbar-dark bg-dark text-white">
-            <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'message:inbox' %}">Inbox</a>
-            <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'message:group' %}">Group</a>
-            <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'message:send' %}">Send</a>
+            <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'chat:inbox' %}">Inbox</a>
+            <a class="font-size25 btn-outline-success text-white nav-item" href="{% url 'chat:send' %}">Send</a>
         </nav>
         {% block content_message %}{% endblock content_message %}
     </div>

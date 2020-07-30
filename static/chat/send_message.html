@@ -1,7 +1,7 @@
 {% extends 'base/message_base.html' %}
 {% load custom_tags %}
 {% block content_message %}
-    <form action="{% url 'message:send' %}" method="post" name="myForm" onsubmit="return chCustom()">
+    <form action="{% url 'chat:send' %}" method="post" name="myForm" onsubmit="return chCustom()">
         {% csrf_token %}
         <label for="myInput">Enter name</label>
         <input autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" name="username" style="background-color: #b8daff"

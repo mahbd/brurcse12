@@ -1,7 +1,0 @@
-{% extends 'base/message_base.html' %}
-{% block content_message %}
-    {% for group_name, message in group_list.items %}
-        <a href="{% url 'message:group_view' message.group.id %}">{{ group_name }}</a>
-        <p>{{ message.message }}</p>
-    {% endfor %}
-{% endblock content_message %}

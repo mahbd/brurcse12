@@ -9,7 +9,7 @@ from django.db import models
 from api.models import CoronaInfoA, CoronaInfoD, CoronaInfoC
 from home.models import UpdateTime
 
-from message.models import LastMessage
+from chat.models import LastMessage
 
 
 def get_name(user):

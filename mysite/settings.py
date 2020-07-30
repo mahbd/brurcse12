@@ -12,11 +12,9 @@ INSTALLED_APPS = [
     'chat',
     'channels',
     'api',
-    'technique',
     'home',
     'tutorial',
     'user',
-    'message',
     # built in apps
     'django.contrib.admin',
     'django.contrib.auth',

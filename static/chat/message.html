@@ -1,8 +1,9 @@
 {% extends 'base/message_base.html' %}
+{% load custom_tags %}
 {% block content_message %}
     <div class="container text-white">
         {% for  sender, message in message_list.items %}
-            <a href="{% url 'message:conversation' sender_ids|get_item:sender %}">{{ sender }}</a>
+            <a href="{% url 'chat:conversation' sender_ids|get_item:sender %}">{{ sender }}</a>
             <p>{{ message }}</p>
         {% endfor %}
         {% if not message_list %}

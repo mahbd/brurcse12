@@ -1,23 +1,82 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db import models
 from django.http import HttpResponse
-from django.shortcuts import render
-
-from message.models import Message, LastMessage
-from home.all_functions import make_read, last_message_update, get_name
-from user.views import token_generator
+from django.shortcuts import render, redirect
+from .models import Message, LastMessage
+from home.all_functions import make_read, last_message_update, get_name, token_generator
 
 
-def index(request):
-    return render(request, 'chat/index.html')
-
-
-def conversation_view(request, room_name):
+@login_required
+def inbox(request):
+    make_read(request)
+    message_list_query = LastMessage.objects.filter(
+        (models.Q(recipient_id=request.user.id) | models.Q(sender_id=request.user.id)))
+    message_page_all = Paginator(message_list_query, 10)
+    try:
+        page_num = request.GET.get('page')
+    except KeyError:
+        page_num = 1
+    message_page = message_page_all.get_page(page_num)
+    message_list = {}
+    sender_ids = {}
+    for message in message_page:
+        if message.sender.id == request.user.id:
+            message_list[get_name(User.objects.get(id=message.recipient_id))] = message.message
+            sender_ids[get_name(User.objects.get(id=message.recipient_id))] = message.recipient_id
+        else:
+            message_list[get_name(message.sender)] = message.message
+            sender_ids[get_name(message.sender)] = message.sender.id
     context = {
-        'room_name': room_name
+        'title': 'Inbox',
+        'message_list': message_list,
+        'sender_ids': sender_ids,
+        'ann_obj': message_page
     }
-    return render(request, 'chat/room.html', context)
+    return render(request, 'chat/message.html', context)
+
+
+@login_required
+def send_message(request):
+    if request.method == 'POST':
+        try:
+            recipient = User.objects.get(username=request.POST['username'])
+            message = request.POST['message']
+            if message != '':
+                new_obj = Message(message=request.POST['message'], sender=request.user, recipient_id=recipient.id)
+                last_message_update(request.user, recipient.id, message)
+                new_obj.save()
+                return redirect('chat:inbox')
+        except User.DoesNotExist:
+            pass
+    user_list = []
+    user_obj = User.objects.all()
+    for user in user_obj:
+        user_list.append(user.username)
+    context = {
+        'title': 'send message',
+        'user_info': user_obj,
+        'user_list': user_list
+    }
+    return render(request, 'chat/send_message.html', context)
+
+
+@login_required
+def target_message(request, recipient_id):
+    if request.method == 'POST':
+        message = request.POST['message']
+        if message != '':
+            last_message_update(request.user, recipient_id, message)
+            new_obj = Message(sender=request.user, recipient_id=recipient_id, message=message)
+            new_obj.save()
+            return redirect('message:conversation', recipient_id)
+    recipient_name = get_name(User.objects.get(id=recipient_id))
+    context = {
+        'title': recipient_name,
+        'recipient_id': recipient_id
+    }
+    return render(request, 'chat/target_message.html', context)
 
 
 def room(request, recipient_id):

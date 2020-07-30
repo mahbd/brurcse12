@@ -52,14 +52,18 @@ def edit_info(request):
             user_obj.first_name = request.POST['first_name']
             user_obj.last_name = request.POST['last_name']
             inf_obj.blood_group = request.POST['blood_group']
+            inf_obj.handle = request.POST['cf_handle']
             user_obj.save()
             inf_obj.save()
             return redirect('users:info')
     bg_options = ['NOT', 'A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
     try:
-        blood_group = UserInfo.objects.get(user_id=request.user.id)
+        user = UserInfo.objects.get(user_id=request.user.id)
+        blood_group = user.blood_group
+        handle = user.handle
     except UserInfo.DoesNotExist:
         blood_group = 'NOT'
+        handle = 'NOT ADDED'
     context = {
         'title': 'Edit info',
         'username': request.user.username,
@@ -67,7 +71,8 @@ def edit_info(request):
         'last_name': request.user.last_name,
         'email': request.user.email,
         'blood_group': blood_group,
-        'bg_options': bg_options
+        'bg_options': bg_options,
+        'handle': handle,
     }
     return render(request, 'registration/edit_user_info.html', context)
 

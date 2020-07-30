@@ -1,5 +1,9 @@
 import requests
+from django.core.paginator import Paginator
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
+from user.models import UserInfo
 from .models import UriInfo
 from bs4 import BeautifulSoup as bs
 import threading
@@ -41,5 +45,33 @@ def update_uri_points(request):
     return redirect('jInfo:home')
 
 
-def cf_problem(request, exclude=False):
-    return exclude;
+def cf_list(request):
+    response = requests.get('https://judge-info.herokuapp.com/cf/get_list/').json()
+    if not response["correct"]:
+        return HttpResponse(response["status"])
+    data = UserInfo.objects.exclude(handle='not_added')
+    all_problem = response['data']
+    paginator = Paginator(all_problem, 25)
+    try:
+        page_number = request.GET.get('page')
+    except KeyError:
+        page_number = 1
+    all_problem = paginator.get_page(page_number)
+    context = {
+        "all_problem": all_problem,
+        "title": "CF problem",
+        "all_handle": data,
+    }
+    return render(request, 'judge_info/cf_problem.html', context)
+
+
+def cf_solves(request):
+    response = requests.get('https://judge-info.herokuapp.com/cf/total_solve/').json()
+    if not response['correct']:
+        return HttpResponse(response['status'])
+    data = response['process']
+    context = {
+        "title": "CF total solve",
+        "all_person": data,
+    }
+    return render(request, 'judge_info/cf_solve.html', context)

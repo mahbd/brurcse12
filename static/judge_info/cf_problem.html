@@ -1,11 +1,11 @@
 {% extends 'base/judge_base.html' %}
 {% block content2 %}
-    <table class="table table-dark">
+    <table class="table table-dark table-bordered table-responsive">
         <thead>
         <tr>
-            <th scope="col">Problem name</th>
-            {% for person in all_person %}
-            <th scope="col">{{ all_person.person }}</th>
+            <th >Problem name</th>
+            {% for handle in all_handle %}
+                <th >{{ handle.handle }}</th>
             {% endfor %}
         </tr>
         </thead>
@@ -13,11 +13,28 @@
         {% for problem in all_problem %}
             <tr>
                 <td>{{ problem.problem_name }}</td>
-                {% for person in all_person %}
-                    <td>{% if person in problem.solvers %}YES{% else %}NO{% endif %}</td>
+                {% for handle in all_handle %}
+                    <td>{% if handle.handle in problem.solvers %}YES{% else %}NO{% endif %}</td>
                 {% endfor %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <div class="pagination text-white h6">
+    <span class="step-links">
+        {% if all_problem.has_previous %}
+            <a href="?page=1" class="btn btn-success">&laquo; first</a>
+            <a href="?page={{ all_problem.previous_page_number }}" class="btn btn-success">previous</a>
+        {% endif %}
+
+        <span class="current h5">
+            Page {{ all_problem.number }} of {{ all_problem.paginator.num_pages }}.
+        </span>
+
+        {% if all_problem.has_next %}
+            <a href="?page={{ all_problem.next_page_number }}" class="btn btn-success">next</a>
+            <a href="?page={{ all_problem.paginator.num_pages }}" class="btn btn-success">last &raquo;</a>
+        {% endif %}
+    </span>
+    </div>
 {% endblock content2 %}

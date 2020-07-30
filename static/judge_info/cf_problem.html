@@ -12,7 +12,7 @@
         <tbody>
         {% for problem in all_problem %}
             <tr>
-                <td>{{ problem.problem_name }}</td>
+                <td><a href="{{ problem.link }}">{{ problem.problem_name }}</a></td>
                 {% for handle in all_handle %}
                     <td>{% if handle.handle in problem.solvers %}YES{% else %}NO{% endif %}</td>
                 {% endfor %}

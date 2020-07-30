@@ -1,3 +1,5 @@
+from operator import itemgetter
+
 import requests
 from django.core.paginator import Paginator
 from django.http import HttpResponse
@@ -70,6 +72,8 @@ def cf_solves(request):
     if not response['correct']:
         return HttpResponse(response['status'])
     data = response['process']
+    print(data)
+    data.sort(key=itemgetter(1), reverse=True)
     context = {
         "title": "CF total solve",
         "all_person": data,

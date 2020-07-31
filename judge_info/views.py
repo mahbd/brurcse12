@@ -83,7 +83,7 @@ def cf_solves(request):
 
 def uri_list(request):
     response = requests.get('https://judge-info.herokuapp.com/uri/all/').json()
-    data = UserInfo.objects.exclude(nick_name='not_added')
+    data = UserInfo.objects.exclude(profile='not_added')
     all_problem = response['process']
     paginator = Paginator(all_problem, 25)
     try:

@@ -27,7 +27,7 @@ class UserInfo(models.Model):
         ordering = ['-blood_group']
 
     def __str__(self):
-        return self.handle
+        return self.nick_name
 
 
 class Token(models.Model):

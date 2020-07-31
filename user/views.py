@@ -48,22 +48,22 @@ def edit_info(request):
                 inf_obj = UserInfo.objects.get(user=user_obj)
             except UserInfo.DoesNotExist:
                 inf_obj = UserInfo(user=user_obj)
-            user_obj.email = request.POST['email']
-            user_obj.first_name = request.POST['first_name']
-            user_obj.last_name = request.POST['last_name']
-            inf_obj.blood_group = request.POST['blood_group']
-            inf_obj.handle = request.POST['cf_handle']
-            user_obj.save()
-            inf_obj.save()
+            try:
+                user_obj.email = request.POST['email']
+                user_obj.first_name = request.POST['first_name']
+                user_obj.last_name = request.POST['last_name']
+                inf_obj.blood_group = request.POST['blood_group']
+                user_obj.save()
+                inf_obj.save()
+            except KeyError:
+                return HttpResponse("Internal error")
             return redirect('users:info')
     bg_options = ['NOT', 'A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
     try:
         user = UserInfo.objects.get(user_id=request.user.id)
         blood_group = user.blood_group
-        handle = user.handle
     except UserInfo.DoesNotExist:
         blood_group = 'NOT'
-        handle = 'NOT ADDED'
     context = {
         'title': 'Edit info',
         'username': request.user.username,
@@ -72,7 +72,6 @@ def edit_info(request):
         'email': request.user.email,
         'blood_group': blood_group,
         'bg_options': bg_options,
-        'handle': handle,
     }
     return render(request, 'registration/edit_user_info.html', context)
 
@@ -88,7 +87,11 @@ def user_info(request):
         'email': request.user.email,
         'blood_group': blood_group,
         'joined_on': request.user.date_joined,
-        'last_visited': request.user.last_login
+        'last_visited': request.user.last_login,
+        'cf_handle': request.user.userinfo.handle,
+        'uri_id': request.user.userinfo.profile,
+        'telegram_id': request.user.userinfo.telegram_id,
+        'nick_name': request.user.userinfo.nick_name,
     }
     return render(request, 'registration/user_info.html', context)
 

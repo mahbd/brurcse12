@@ -1,12 +1,12 @@
 {% extends 'base/judge_base.html' %}
 {% block content2 %}
-    <h3>Codeforces problem name list</h3>
+    <h3>URI problem name list</h3>
     <table class="table table-dark table-bordered table-responsive">
         <thead>
         <tr>
-            <th >Problem name</th>
+            <th>Problem name</th>
             {% for handle in all_handle %}
-                <th >{{ handle.nick_name }}</th>
+                <th>{{ handle.nick_name }}</th>
             {% endfor %}
         </tr>
         </thead>
@@ -15,7 +15,7 @@
             <tr>
                 <td><a href="{{ problem.link }}">{{ problem.problem_name }}</a></td>
                 {% for handle in all_handle %}
-                    <td>{% if handle.handle in problem.solvers %}YES{% else %}NO{% endif %}</td>
+                    <td>{% if handle.nick_name in problem.solvers %}YES{% else %}NO{% endif %}</td>
                 {% endfor %}
             </tr>
         {% endfor %}

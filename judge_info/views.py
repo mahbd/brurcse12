@@ -79,3 +79,21 @@ def cf_solves(request):
         "all_person": data,
     }
     return render(request, 'judge_info/cf_solve.html', context)
+
+
+def uri_list(request):
+    response = requests.get('https://judge-info.herokuapp.com/uri/all/').json()
+    data = UserInfo.objects.exclude(nick_name='not_added')
+    all_problem = response['process']
+    paginator = Paginator(all_problem, 25)
+    try:
+        page_number = request.GET.get('page')
+    except KeyError:
+        page_number = 1
+    all_problem = paginator.get_page(page_number)
+    context = {
+        "all_problem": all_problem,
+        "title": "URI problem",
+        "all_handle": data,
+    }
+    return render(request, 'judge_info/uri_problem.html', context)

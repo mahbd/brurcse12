@@ -1,18 +1,55 @@
 {% extends 'base/base.html' %}
 {% block content %}
+    <p class="display-4">User Information</p>
     <div class="container text-white">
-        <p class="display-4">User Information</p>
-        <h3>First name: {{ first_name }}</h3>
-        <h3>Last name: {{ last_name }}</h3>
-        {% if not email %}
-            <h3 class="alert-danger">Email: Add email to be able to reset password</h3>
-        {% else %}
-            <h3>Email: {{ email }}</h3>
-        {% endif %}
-
-        <h3>Blood group: {{ blood_group }}</h3>
-        <h3>Joined on: {{ joined_on }}</h3>
-        <h3>Last visited: {{ last_visited }}</h3>
+        <table class="table table-dark table-bordered">
+            <tbody>
+            <tr>
+                <td>First name</td>
+                <td>{{ first_name }}</td>
+            </tr>
+            <tr>
+                <td>Last name</td>
+                <td>{{ last_name }}</td>
+            </tr>
+            <tr>
+                <td>Nick name</td>
+                <td>{{ nick_name }}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{% if not email %}
+                    <h3 class="alert-danger">Email: Add email to be able to reset password</h3>
+                {% else %}
+                    <h3>{{ email }}</h3>
+                {% endif %}</td>
+            </tr>
+            <tr>
+                <td>Blood group</td>
+                <td>{{ blood_group }}</td>
+            </tr>
+            <tr>
+                <td>Codeforces Handle</td>
+                <td>{{ cf_handle }}</td>
+            </tr>
+            <tr>
+                <td>URI ID</td>
+                <td>{{ uri_id }}</td>
+            </tr>
+            <tr>
+                <td>Telegram member id</td>
+                <td>{{ telegram_id }}</td>
+            </tr>
+            <tr>
+                <td>Joined on</td>
+                <td>{{ joined_on }}</td>
+            </tr>
+            <tr>
+                <td>Last visited</td>
+                <td>{{ last_visited }}</td>
+            </tr>
+            </tbody>
+        </table>
         <a class="btn-lg btn-success h1" href="{% url 'users:edit' %}">Edit</a>
     </div>
 {% endblock content %}

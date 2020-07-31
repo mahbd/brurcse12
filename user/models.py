@@ -15,18 +15,19 @@ bg = (
 
 
 class UserInfo(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True)
     blood_group = models.CharField(max_length=5, blank=True, choices=bg)
     user_code = models.CharField(max_length=100, default='not_added')
     handle = models.CharField(max_length=100, default='not_added')
     profile = models.CharField(max_length=100, default='not_added')
     telegram_id = models.CharField(max_length=100, default='not_added')
+    nick_name = models.CharField(max_length=100, default='not_added')
 
     class Meta:
         ordering = ['-blood_group']
 
     def __str__(self):
-        return self.user.username
+        return self.handle
 
 
 class Token(models.Model):

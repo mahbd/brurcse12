@@ -13,7 +13,10 @@ from chat.models import LastMessage
 
 
 def get_name(user):
-    name = user.first_name + " " + user.last_name
+    try:
+        name = user.userinfo.nick_name
+    except:
+        name = user.first_name + " " + user.last_name
     if name == ' ':
         return user.username
     return name

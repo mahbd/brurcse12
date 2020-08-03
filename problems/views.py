@@ -2,6 +2,8 @@ import os
 from datetime import datetime, timezone
 from operator import itemgetter
 from django.core.paginator import Paginator
+
+from home.all_functions import get_name
 from mysite.settings import BASE_DIR
 import pytz
 import requests
@@ -92,7 +94,7 @@ def problem(request, problem_id, contest_id=0):  # Single problem
 
 
 @login_required
-def add_problem(request, cid):    # Add problem for both contest and regular
+def add_problem(request, cid):  # Add problem for both contest and regular
     if request.method == 'POST':
         try:
             problem_name = request.POST['pn']
@@ -294,7 +296,7 @@ def submission(request, sub_id):
     if not response['correct']:
         return HttpResponse(response['status'])
     if response['restricted'] == 'submitter':
-        if request.user.is_staff:
+        if request.user.is_superuser or response["process"]["problem_creator"] == request.user.username:
             pass
         elif request.user.username != response['process']['submitter_code']:
             return HttpResponse('Contest is running')
@@ -346,13 +348,22 @@ def submission_result(request, problem_id):
     print(res)
     if not res['correct']:
         return HttpResponse(res['status'])
-    else:
-        context = {
-            'title': 'result',
-            'result': res,
-            'code': submission_code,
+    try:
+        message = "Hey " + get_name(request.user) + ",\nYour code's result for " + res['problem_name'] + " is " + res[
+            'verdict'] + ". Thanks for participating"
+        data = {
+            "message": message,
+            "chat_id": request.user.userinfo.telegram_id
         }
-        return render(request, 'problems/sub_result.html', context)
+        requests.post('http://pb12.herokuapp.com/bot/send_tm/', data=data)
+    except:
+        pass
+    context = {
+        'title': 'result',
+        'result': res,
+        'code': submission_code,
+    }
+    return render(request, 'problems/sub_result.html', context)
 
 
 # Test case section

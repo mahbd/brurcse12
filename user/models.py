@@ -24,7 +24,7 @@ class UserInfo(models.Model):
     nick_name = models.CharField(max_length=100, default='not_added')
 
     class Meta:
-        ordering = ['-blood_group']
+        ordering = ['nick_name']
 
     def __str__(self):
         return self.nick_name

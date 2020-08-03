@@ -13,7 +13,7 @@ urlpatterns = [
     path('get_file/snippets/<str:file_name>', views.get_file_snippets, name='get_snippets'),
     path('contest_problems=<int:contest_id>/', views.contest_problems, name='contest_problem'),
     path('add_test_case=<int:problem_id>/', views.add_test_case, name='add_test_case'),
-    path('contest_problem=<int:problem_id>cid=<int:contest_id>/', views.contest_problem, name='s_c_problem'),
+    path('contest_problem=<int:problem_id>cid=<int:contest_id>/', views.problem, name='s_c_problem'),
     path('upcoming_contest<int:contest_id>/', views.upcoming_contest, name='upcoming_contest'),
     path('ended_contest<int:contest_id>/', views.ended_contest, name='ended_contest'),
     path('all_submissions/', views.all_submissions, name='all_submissions'),

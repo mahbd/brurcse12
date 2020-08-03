@@ -11,14 +11,16 @@ from django.shortcuts import render, redirect
 from .models import ProbAnn
 from home.models import SecretKeys
 
+#  Online Judge access key
 JAT = SecretKeys.objects.get(name='JAT').key
 
+# Base Link address
 b_u_a = 'mahbd.pythonanywhere.com'
 
 
 # b_u_a = '127.0.0.1:8000'
 
-
+# Convert UTC string to python Dhaka timezone
 def time_convert(time):
     tz_dhaka = pytz.timezone('Asia/Dhaka')
     time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -27,7 +29,26 @@ def time_convert(time):
     return time
 
 
-def problems(request):
+# Editor file fetching
+def get_file(request, file_name):
+    if file_name == "mode-c_cpp.js":
+        file = requests.get('https://drive.google.com/uc?export=download&id=1pm1g-mt3BJstjKlUYAEyETuW6pVH4v6Q').content
+    else:
+        file = requests.get('https://drive.google.com/uc?export=download&id=1qh6kmc7XVi06_6tEeRWdGzvzCFycapop').content
+    return HttpResponse(file, content_type='application/javascript')
+
+
+def get_file_snippets(request, file_name):
+    dir2 = os.path.join(BASE_DIR + '/home/static/snippets/' + file_name)
+    file = open(dir2, 'r')
+    res = ''
+    for m in file:
+        res += m.strip() + '\n'
+    return HttpResponse(res, content_type='application/javascript')
+
+
+# Problem Section
+def problems(request):  # All visible problem list
     ann = ProbAnn.objects.all()
     data = {
         "JAT": JAT,
@@ -48,58 +69,72 @@ def problems(request):
     return render(request, 'problems/home.html', context)
 
 
-def problem(request, problem_id):
+def problem(request, problem_id, contest_id=0):  # Single problem
     data = {
         "problem_id": problem_id,
         "JAT": JAT
     }
     problem_info = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
-    print(problem_info)
     if not problem_info['correct']:
-        return HttpResponse(problem_info['status'])
+        return HttpResponse(problem_info["status"])
+    if problem_info["restricted"] == "submitter":
+        if request.user.is_staff:
+            pass
+        elif request.user.username != problem_info["problem"]["creator"]:
+            return HttpResponse('Contest is running')
     problem_info = problem_info['problem']
     context = {
         'title': "problem",
         'problem': problem_info,
-        'contest_id': 0,
+        'contest_id': contest_id,
     }
     return render(request, 'problems/problem.html', context)
 
 
 @login_required
-def submission_result(request, problem_id):
-    if request.method != 'POST':
-        raise Http404
-    try:
-        submission_code = request.POST['code']
-        contest_id = request.POST['contest_id']
-    except KeyError:
-        return HttpResponse("Bad input field")
-    if request.user.is_authenticated:
-        user_code = request.user.username
-    else:
-        user_code = 'guest'
-    data = {
-        "problem_id": problem_id,
-        "submission_code": submission_code,
-        "user_code": user_code,
-        "language": "cpp",
-        "contest_id": contest_id,
-        "JAT": JAT,
-    }
-    res = requests.post('http://' + b_u_a + '/compiler/', data=data).json()
-    print(res)
-    if not res['correct']:
-        return HttpResponse(res['status'])
-    else:
-        context = {
-            'title': 'result',
-            'result': res,
-            'code': submission_code,
+def add_problem(request, cid):    # Add problem for both contest and regular
+    if request.method == 'POST':
+        try:
+            problem_name = request.POST['pn']
+            problem_statement = request.POST['ps']
+            input_terms = request.POST['it']
+            output_terms = request.POST['ot']
+            group = request.POST['group']
+            correct_code = request.POST['cc']
+            is_contest = request.POST['is_con']
+            c_prob_id = request.POST['c_prob_id']
+        except KeyError:
+            return HttpResponse("Error in forms")
+        if int(is_contest):
+            hidden = True
+        else:
+            hidden = False
+        data = {
+            "problem_name": problem_name,
+            "problem_statement": problem_statement,
+            "input_terms": input_terms,
+            "output_terms": output_terms,
+            "creator": request.user.username,
+            "group": group,
+            "correct_code": correct_code,
+            "hidden": hidden,
+            "c_prob_id": c_prob_id,
+            "JAT": JAT,
+            "cid": cid
         }
-        return render(request, 'problems/sub_result.html', context)
+        response = requests.post('http://' + b_u_a + '/compiler/add_problem/', data=data).json()
+        print(response)
+        if not response['correct']:
+            return HttpResponse(response['status'])
+        return redirect('problems:problem', response['id'])
+    context = {
+        'title': "add problem",
+        'contest_id': cid,
+    }
+    return render(request, 'problems/add_problem.html', context)
 
 
+# Contest section
 def contest_list(request):
     data = {
         "JAT": JAT,
@@ -137,100 +172,6 @@ def contest_list(request):
     return render(request, 'problems/contest_list.html', context)
 
 
-@login_required
-def add_problem(request, cid):
-    if request.method == 'POST':
-        try:
-            problem_name = request.POST['pn']
-            problem_statement = request.POST['ps']
-            input_terms = request.POST['it']
-            output_terms = request.POST['ot']
-            group = request.POST['group']
-            correct_code = request.POST['cc']
-            is_contest = request.POST['is_con']
-            c_prob_id = request.POST['c_prob_id']
-        except KeyError:
-            return HttpResponse("Error in forms")
-        if int(is_contest):
-            hidden = True
-        else:
-            hidden = False
-        data = {
-            "problem_name": problem_name,
-            "problem_statement": problem_statement,
-            "input_terms": input_terms,
-            "output_terms": output_terms,
-            "creator": request.user.username,
-            "group": group,
-            "correct_code": correct_code,
-            "hidden": hidden,
-            "c_prob_id": c_prob_id,
-            "JAT": JAT,
-        }
-        response = requests.post('http://' + b_u_a + '/compiler/add_problem/', data=data).json()
-        print(response)
-        if not response['correct']:
-            return HttpResponse(response['status'])
-        return redirect('problems:problem', response['id'])
-    context = {
-        'title': "add problem",
-        'contest_id': cid,
-    }
-    return render(request, 'problems/add_problem.html', context)
-
-
-def get_file(request, file_name):
-    dir2 = os.path.join(BASE_DIR + '/home/static/' + file_name)
-    file = open(dir2, 'r')
-    res = ''
-    for m in file:
-        res += m.strip() + '\n'
-    return HttpResponse(res, content_type='application/javascript')
-
-
-def get_file_snippets(request, file_name):
-    dir2 = os.path.join(BASE_DIR + '/home/static/snippets/' + file_name)
-    file = open(dir2, 'r')
-    res = ''
-    for m in file:
-        res += m.strip() + '\n'
-    return HttpResponse(res, content_type='application/javascript')
-
-
-@login_required
-def add_test_case(request, problem_id):
-    if not request.user.is_staff:
-        return Http404
-    if request.method == 'POST':
-        data = {
-            'problem_id': problem_id,
-            'inputs': request.POST['inputs'],
-            "JAT": JAT,
-        }
-        response = requests.post('http://' + b_u_a + '/compiler/add_test_case/', data=data).json()
-        if not response['correct']:
-            return HttpResponse(response['status'])
-        context = {
-            'result': response,
-        }
-        return render(request, 'problems/test_case_result.html', context)
-    data = {
-        "problem_id": problem_id,
-        "JAT": JAT
-    }
-    code = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
-    if not code['correct']:
-        return HttpResponse(code['status'])
-    code = code['problem']
-    print(code)
-    context = {
-        'title': code['problem_name'],
-        'problem_id': problem_id,
-        'result': code,
-    }
-    return render(request, 'problems/add_test_case.html', context)
-
-
 def contest_problems(request, contest_id):
     data = {
         'contest_id': contest_id,
@@ -249,23 +190,6 @@ def contest_problems(request, contest_id):
         'contest_id': contest_id,
     }
     return render(request, 'problems/home.html', context)
-
-
-def contest_problem(request, problem_id, contest_id):
-    data = {
-        "problem_id": problem_id,
-        "JAT": JAT,
-    }
-    problem_info = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
-    print(problem_info)
-    if not problem_info['correct']:
-        return HttpResponse(problem_info['status'])
-    context = {
-        'title': "problem",
-        'problem': problem_info['problem'],
-        'contest_id': contest_id,
-    }
-    return render(request, 'problems/problem.html', context)
 
 
 def upcoming_contest(request, contest_id):
@@ -335,6 +259,7 @@ def standing(request, contest_id):
     return render(request, 'problems/standing.html', context)
 
 
+# Submission section
 def all_submissions(request):
     data = {
         "JAT": JAT,
@@ -382,6 +307,55 @@ def submission(request, sub_id):
     return render(request, 'problems/submission.html', context)
 
 
+@login_required
+def submission_result(request, problem_id):
+    if request.method != 'POST':
+        raise Http404
+    try:
+        submission_code = request.POST['code']
+        contest_id = request.POST['contest_id']
+    except KeyError:
+        return HttpResponse("Bad input field")
+    data = {
+        'contest_id': contest_id,
+        "JAT": JAT,
+    }
+    response = requests.post('http://' + b_u_a + '/compiler/get_contest_details/', data=data).json()
+    if not response['correct']:
+        return HttpResponse(response['status'])
+    if request.user.is_superuser:
+        is_test = True
+    elif response["creator"] == request.user.username:
+        is_test = True
+    else:
+        is_test = False
+    if request.user.is_authenticated:
+        user_code = request.user.username
+    else:
+        user_code = 'guest'
+    data = {
+        "problem_id": problem_id,
+        "submission_code": submission_code,
+        "user_code": user_code,
+        "language": "cpp",
+        "contest_id": contest_id,
+        "is_test": is_test,
+        "JAT": JAT,
+    }
+    res = requests.post('http://' + b_u_a + '/compiler/', data=data).json()
+    print(res)
+    if not res['correct']:
+        return HttpResponse(res['status'])
+    else:
+        context = {
+            'title': 'result',
+            'result': res,
+            'code': submission_code,
+        }
+        return render(request, 'problems/sub_result.html', context)
+
+
+# Test case section
 def test_case_list(request, problem_id):
     data = {
         "problem_id": problem_id,
@@ -395,3 +369,37 @@ def test_case_list(request, problem_id):
         "test_list": response['process']
     }
     return render(request, 'problems/test_case_list.html', context)
+
+
+@login_required
+def add_test_case(request, problem_id):
+    if not request.user.is_staff:
+        return Http404
+    if request.method == 'POST':
+        data = {
+            'problem_id': problem_id,
+            'inputs': request.POST['inputs'],
+            "JAT": JAT,
+        }
+        response = requests.post('http://' + b_u_a + '/compiler/add_test_case/', data=data).json()
+        if not response['correct']:
+            return HttpResponse(response['status'])
+        context = {
+            'result': response,
+        }
+        return render(request, 'problems/test_case_result.html', context)
+    data = {
+        "problem_id": problem_id,
+        "JAT": JAT
+    }
+    code = requests.post('http://' + b_u_a + '/compiler/get_problem/', data=data).json()
+    if not code['correct']:
+        return HttpResponse(code['status'])
+    code = code['problem']
+    print(code)
+    context = {
+        'title': code['problem_name'],
+        'problem_id': problem_id,
+        'result': code,
+    }
+    return render(request, 'problems/add_test_case.html', context)

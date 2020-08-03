@@ -47,8 +47,11 @@ def update_uri_points(request):
     return redirect('jInfo:home')
 
 
-def cf_list(request):
-    response = requests.get('https://judge-info.herokuapp.com/cf/get_list/').json()
+def cf_list(request, handle=False):
+    if handle:
+        response = requests.get('https://judge-info.herokuapp.com/cf/get_list/e=' + str(handle)).json()
+    else:
+        response = requests.get('https://judge-info.herokuapp.com/cf/get_list/').json()
     if not response["correct"]:
         return HttpResponse(response["status"])
     data = UserInfo.objects.exclude(handle='not_added')
@@ -81,8 +84,11 @@ def cf_solves(request):
     return render(request, 'judge_info/cf_solve.html', context)
 
 
-def uri_list(request):
-    response = requests.get('https://judge-info.herokuapp.com/uri/all/').json()
+def uri_list(request, profile=False):
+    if profile:
+        response = requests.get('https://judge-info.herokuapp.com/uri/exclude/' + str(profile)).json()
+    else:
+        response = requests.get('https://judge-info.herokuapp.com/uri/all/').json()
     data = UserInfo.objects.exclude(profile='not_added')
     all_problem = response['process']
     paginator = Paginator(all_problem, 25)

@@ -346,8 +346,9 @@ def submission_result(request, problem_id):
     if not res['correct']:
         return HttpResponse(res['status'])
     try:
+        url = "http://brurcse12.herokuapp.com/contests/submission=" + res['sub_id'] + '/'
         message = "Hey " + get_name(request.user) + ",\nYour code's result for >>" + res['problem_name'] + "<< is " + \
-                  res['verdict'] + ". Thanks for participating"
+                  res['verdict'] + "Code urls " + url + ". Thanks for participating"
         data = {
             "message": message,
             "chat_id": request.user.userinfo.telegram_id

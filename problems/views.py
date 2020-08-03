@@ -318,8 +318,9 @@ def submission_result(request, problem_id):
         contest_id = request.POST['contest_id']
     except KeyError:
         return HttpResponse("Bad input field")
+    print(contest_id)
     data = {
-        'contest_id': contest_id,
+        'contest_id': int(contest_id),
         "JAT": JAT,
     }
     response = requests.post('http://' + b_u_a + '/compiler/get_contest_details/', data=data).json()

@@ -17,10 +17,11 @@ from home.models import SecretKeys
 JAT = SecretKeys.objects.get(name='JAT').key
 
 # Base Link address
-b_u_a = 'mahbd.pythonanywhere.com'
+# b_u_a = 'mahbd.pythonanywhere.com'
 
 
-# b_u_a = '127.0.0.1:8000'
+b_u_a = '127.0.0.1:8001'
+
 
 # Convert UTC string to python Dhaka timezone
 def time_convert(time):
@@ -55,7 +56,6 @@ def problems(request):  # All visible problem list
     data = {
         "JAT": JAT,
     }
-    print("jat = " + JAT)
     problem_list = requests.post('http://' + b_u_a + '/compiler/get_problem_list/', data=data).json()
     if not problem_list['correct']:
         return HttpResponse(problem_list['status'])
@@ -318,14 +318,11 @@ def submission_result(request, problem_id):
         contest_id = request.POST['contest_id']
     except KeyError:
         return HttpResponse("Bad input field")
-    print(contest_id)
     data = {
         'contest_id': int(contest_id),
         "JAT": JAT,
     }
     response = requests.post('http://' + b_u_a + '/compiler/get_contest_details/', data=data).json()
-    if not response['correct']:
-        return HttpResponse(response['status'])
     if request.user.is_superuser:
         is_test = True
     elif response["creator"] == request.user.username:
@@ -346,17 +343,17 @@ def submission_result(request, problem_id):
         "JAT": JAT,
     }
     res = requests.post('http://' + b_u_a + '/compiler/', data=data).json()
-    print(res)
     if not res['correct']:
         return HttpResponse(res['status'])
     try:
-        message = "Hey " + get_name(request.user) + ",\nYour code's result for " + res['problem_name'] + " is " + res[
-            'verdict'] + ". Thanks for participating"
+        message = "Hey " + get_name(request.user) + ",\nYour code's result for >>" + res['problem_name'] + "<< is " + \
+                  res['verdict'] + ". Thanks for participating"
         data = {
             "message": message,
             "chat_id": request.user.userinfo.telegram_id
         }
-        requests.post('http://pb12.herokuapp.com/bot/send_tm/', data=data)
+        kkk = requests.post('http://pb12.herokuapp.com/bot/send_tm/', data=data).content
+        print(kkk)
     except:
         pass
     context = {

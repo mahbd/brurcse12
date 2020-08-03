@@ -17,10 +17,10 @@ from home.models import SecretKeys
 JAT = SecretKeys.objects.get(name='JAT').key
 
 # Base Link address
-# b_u_a = 'mahbd.pythonanywhere.com'
+b_u_a = 'mahbd.pythonanywhere.com'
 
 
-b_u_a = '127.0.0.1:8001'
+# b_u_a = '127.0.0.1:8001'
 
 
 # Convert UTC string to python Dhaka timezone

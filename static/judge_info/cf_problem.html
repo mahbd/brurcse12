@@ -30,7 +30,7 @@
                 {% for handle in all_handle %}
                     <td>{% if handle.handle in problem.solvers %}
                         <img width="40px" height="30px" src="{% static '/correct.jpg' %}" alt="YES">{% else %}
-                        <img width="40px" height="30px" src="{% static 'incorrect.webp' %}" alt="NO">{% endif %}</td>
+                        <img width="40px" height="30px" src="{% static '/incorrect.webp' %}" alt="NO">{% endif %}</td>
                 {% endfor %}
             </tr>
         {% endfor %}

@@ -1,3 +1,4 @@
+import time
 from operator import itemgetter
 
 import requests
@@ -44,6 +45,7 @@ def update_uri_points(request):
     for info in all_info:
         thread = threading.Thread(target=uri_point_update, args=[info])
         thread.start()
+    time.sleep(15)
     return redirect('jInfo:home')
 
 

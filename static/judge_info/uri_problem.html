@@ -1,6 +1,8 @@
 {% extends 'base/judge_base.html' %}
 {% load static %}
 {% block content2 %}
+    <p>Auto updates every 3 hours.<a href="http://judge-info.herokuapp.com/cf/update/" class="btn btn-info">Update</a>
+    </p>
     <p>Exclude yourself to find easiest unsolved problem</p>
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
@@ -26,7 +28,7 @@
         <tbody>
         {% for problem in all_problem %}
             <tr>
-                <td><a href="{{ problem.link }}">{{ problem.problem_name }}</a></td>
+                <td> <a target="_blank" href="{{ problem.link }}">{{ problem.problem_name }}</a> </td>
                 {% for handle in all_handle %}
                     <td>{% if handle.nick_name in problem.solvers %}
                         <img width="40px" height="30px" src="{% static 'images/correct.jpg' %}" alt="YES">{% else %}

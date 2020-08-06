@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load custom_tags %}
 {% block content %}
     <div class="container">
         {% if tut_obj.hidden %}
@@ -15,7 +16,7 @@
                     {% if user.id == tut_obj.owner_id or user.id == 1 or user.id == 2 %}
                         <a href="{% url 'tutorial:edit' tut_obj.id %}">edit</a>
                     {% else %}
-                        <a href="{% url 'message:target' tut_obj.owner_id %}">request correction</a>
+                        <a href="{% url 'chat:target_message' tut_obj.owner_id %}">request correction</a>
                     {% endif %}
                     <br>Date: {{ tut_obj.date }} by:{{ tut_obj.owner|get_name }}</small>
             </h4>

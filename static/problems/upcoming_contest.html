@@ -2,12 +2,13 @@
 {% block content %}
     <p class="display-4 text-white">{{ name }}</p>
     <p class="display-4 text-white" id="startTime" hidden="hidden">{{ date }}</p>
+    <p id="contest_id" hidden="hidden">{{ contest_id }}</p>
     <p class="display-4 text-white">Starting After:</p>
     <p id="demo" class="text-white display-4"></p>
     <script>
         // Set the date we're counting down to
-        var startDate2 = document.getElementById('startTime').innerText
-        var countDownDate = new Date(startDate2).getTime();
+        const startDate2 = document.getElementById('startTime').innerText;
+        const countDownDate = new Date(startDate2).getTime();
 
         // Update the count down every 1 second
         var x = setInterval(function () {
@@ -32,6 +33,8 @@
             if (distance < 0) {
                 clearInterval(x);
                 document.getElementById("demo").innerHTML = "Started";
+                const contest_id = document.getElementById("contest_id").innerText
+                window.location.href = "http://brurcse12.herokuapp.com/contests/contest_problems=" + contest_id + "/";
             }
         }, 1000);
     </script>

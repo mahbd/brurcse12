@@ -48,8 +48,8 @@ body {
 }
 
 .nav-item:hover {
-    background-color: #fff;
-    color: #000 !important
+    background-color: #eff;
+    color: #000000 !important
 }
 
 .nav-item-red:hover {

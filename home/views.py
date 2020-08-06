@@ -3,16 +3,20 @@ from django.core.paginator import Paginator
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
 from tutorial.models import Tutorial
-from .models import Announce, AnnForm, Faq
+from .models import Announce, AnnForm, Faq, DData
 
 
 def index(request):
     ann_obj = Announce.objects.all()[:6]
     tut_obj = Tutorial.objects.all()[:6]
+    pic_links = DData.objects.filter(type='home_gal')
+    about_us = DData.objects.get(name="about_us")
     context = {
         'title': 'Home',
         'ann_obj': ann_obj,
         'tut_obj': tut_obj,
+        'pic_links': pic_links,
+        'about_us': about_us,
     }
     return render(request, 'home/home.html', context)
 

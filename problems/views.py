@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import *
 from django.shortcuts import render, redirect
 from .models import ProbAnn
-from home.models import SecretKeys
+from home.models import SecretKeys, DData
 
 #  Online Judge access key
 JAT = SecretKeys.objects.get(name='JAT').key
@@ -239,11 +239,15 @@ def ended_contest(request, contest_id):
     return render(request, 'problems/home.html', context)
 
 
-def standing(request, contest_id):
+def standing(request, contest_id=False):
+    if not contest_id:
+        contest_id = DData.objects.get(name='current_standing')
     data = {
         'contest_id': contest_id,
         "JAT": JAT,
     }
+    response = requests.post('http://' + b_u_a + '/compiler/get_contest_details/', data=data).json()
+    contest_name = response['contest_name']
     response = requests.post('http://' + b_u_a + '/compiler/get_submissions_contest/', data=data).json()
     print(response)
     if not response['correct']:
@@ -267,6 +271,7 @@ def standing(request, contest_id):
     final_info.sort(key=itemgetter(1), reverse=True)
     context = {
         'title': 'contest result',
+        'contest_name': contest_name,
         'results': final_info,
     }
     return render(request, 'problems/standing.html', context)
@@ -312,11 +317,14 @@ def submission(request, sub_id):
     response = requests.post('http://' + b_u_a + '/compiler/get_submission/', data=data).json()
     if not response['correct']:
         return HttpResponse(response['status'])
-    if response['restricted'] == 'submitter':
+    if DData.objects.get(name='contest_running').data == 'YES':
         if request.user.is_superuser or response["process"]["problem_creator"] == request.user.username:
             pass
         elif request.user.username != response['process']['submitter_code']:
-            return HttpResponse('Contest is running')
+            context = {
+                "info": "Contest is running. Please try this after contest"
+            }
+            return render(request, 'base/not_allowed.html', context)
     time = time_convert(response['process']['date'])
     response['process']['date'] = datetime.strftime(time, "%D %I:%M %P")
     context = {

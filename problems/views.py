@@ -283,8 +283,10 @@ def all_submissions(request):
     sub_list = res['process']
     for sub in sub_list:
         try:
-            sub[1] = User.objects.get(username=sub[1]).userinfo.nick_name
-        except User.DoesNotExist:
+            nick_name = User.objects.get(username=sub[1]).userinfo.nick_name
+            if nick_name != 'not_added':
+                sub[1] = nick_name
+        except:
             pass
         time = time_convert(sub[0])
         sub[0] = datetime.strftime(time, "%D %I:%M %P")

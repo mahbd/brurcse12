@@ -1,6 +1,8 @@
 import os
 from datetime import datetime, timezone
 from operator import itemgetter
+
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
 from home.all_functions import get_name
@@ -153,8 +155,12 @@ def contest_list(request):
         end_time = pytz.timezone('UTC').localize(datetime.strptime(cc['end_time'], "%Y-%m-%dT%H:%M:%SZ"))
         start_time = start_time.astimezone(tz_dhaka)
         end_time = end_time.astimezone(tz_dhaka)
-        cc['start_time'] = datetime.strftime(start_time, "%a %I:%M %P")
-        cc['end_time'] = datetime.strftime(end_time, "%a %I:%M %P")
+        try:
+            cc['creator'] = User.objects.get(username=cc['creator']).userinfo.nick_name
+        except User.DoesNotExist:
+            pass
+        cc['start_time'] = datetime.strftime(start_time, "%d %b %y::%I:%M %P")
+        cc['end_time'] = datetime.strftime(end_time, "%d %b %y::%I:%M %P")
         if present < start_time:
             upcoming_contests.append(cc)
         elif end_time < present:

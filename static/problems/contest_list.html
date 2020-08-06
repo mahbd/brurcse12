@@ -6,16 +6,18 @@
             <h6>No running contests</h6>
         {% else %}
             {% for contest in running_contests %}
-                <div class="card mb3 text-dark">
+                <div class="card mb3 text-white bg-dark">
                     <div class="card-header">
                         <div class="row"><p>Created By: {{ contest.creator }}</p>
-                            <p>Tested by: {{ contest.tester }}</p>
-                            Start: {{ contest.start_time }}...End: {{ contest.end_time }}</div>
+                            <p class="ml-auto">Tested by: {{ contest.tester }}</p></div>
+                        <div class="row"><p>Start: {{ contest.start_time }}</p>
+                            <p class="ml-auto">End: {{ contest.end_time }}</p></div>
                     </div>
                     <div class="card-body">
-                        <a href="{% url 'problems:contest_problem' contest.id %}">{{ contest.contest_name }}</a>
+                        <a class="h4" href="{% url 'problems:contest_problem' contest.id %}">{{ contest.contest_name }}</a>
                     </div>
                 </div>
+                <br>
             {% endfor %}
         {% endif %}
 
@@ -24,7 +26,7 @@
             <h6>No upcoming contests</h6>
         {% else %}
             {% for contest in upcoming_contests %}
-                <div class="card mb3 text-dark">
+                <div class="card mb3 text-white bg-dark">
                     <div class="card-header">
                         <div class="row"><p>Created By: {{ contest.creator }}</p>
                             <p class="ml-auto">Tested by: {{ contest.tester }}</p></div>
@@ -33,14 +35,15 @@
                     </div>
                     {% if user.is_staff or user.user_info.nick_name == contest.creator or user.userinfo.nick_name == contest.tester %}
                         <div class="card-body">
-                            <a href="{% url 'problems:contest_problem' contest.id %}">{{ contest.contest_name }}</a>
+                            <a class="h4" href="{% url 'problems:contest_problem' contest.id %}">{{ contest.contest_name }}</a>
                         </div>
                     {% else %}
                         <div class="card-body">
-                            <a href="{% url 'problems:upcoming_contest' contest.id %}">{{ contest.contest_name }}</a>
+                            <a class="h4" href="{% url 'problems:upcoming_contest' contest.id %}">{{ contest.contest_name }}</a>
                         </div>
                     {% endif %}
                 </div>
+                <br>
             {% endfor %}
         {% endif %}
 
@@ -49,14 +52,18 @@
             <h6>No Ended contests</h6>
         {% else %}
             {% for contest in ended_contest %}
-                <div class="card mb3 text-dark">
+                <div class="card mb3 text-white bg-dark">
                     <div class="card-header">
-                        <p>By: {{ contest.creator }}...Start: {{ contest.start_time }}...End: {{ contest.end_time }}</p>
+                        <div class="row"><p>Created By: {{ contest.creator }}</p>
+                            <p class="ml-auto">Tested by: {{ contest.tester }}</p></div>
+                        <div class="row"><p>Start: {{ contest.start_time }}</p>
+                            <p class="ml-auto">End: {{ contest.end_time }}</p></div>
                     </div>
                     <div class="card-body">
-                        <a href="{% url 'problems:ended_contest' contest.id %}">{{ contest.contest_name }}</a>
+                        <a class="h4" href="{% url 'problems:ended_contest' contest.id %}">{{ contest.contest_name }}</a>
                     </div>
                 </div>
+                <br>
             {% endfor %}
         {% endif %}
     </div>

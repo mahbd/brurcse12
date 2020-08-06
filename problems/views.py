@@ -350,8 +350,9 @@ def submission_result(request, problem_id):
     response = requests.post('http://' + b_u_a + '/compiler/get_contest_details/', data=data).json()
     if request.user.is_superuser:
         is_test = True
-    elif response["creator"] == request.user.username:
-        is_test = True
+    elif response["correct"] == request.user.username:
+        if response['creator'] == request.user.username:
+            is_test = True
     else:
         is_test = False
     if request.user.is_authenticated:

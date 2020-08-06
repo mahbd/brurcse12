@@ -1,25 +1,30 @@
 {% extends 'base/base.html' %}
 {% load custom_tags %}
 {% block content %}
-    <form action="{% url 'chat:send' %}" method="post" name="myForm" onsubmit="return chCustom()">
-        {% csrf_token %}
-        <label for="myInput">Enter name</label>
-        <input autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" name="username" style="background-color: #b8daff"
-               class="form-control" type="text" placeholder="Username.." id="myInput" value="" onkeyup="filterFunction()">
-        <div id="myDropdown" class="dropdown">
-            {% for user in user_info %}
-                <p class="btn btn-outline-success" id="item" style="display: none" id="{{ user.username }}"
-                   onclick="changeValue('{{ user.username }}')">{{ user.username }}
-                    {% if user.first_name or user.last_name %}-> {{ user|get_name }}{% endif %}</p>
-            {% endfor %}
-        </div>
-        <label for="message"></label>
-        <textarea style="background-color: #b8daff" class="form-control" name="message" id="message" rows="10"></textarea>
-        <button class="btn btn-outline-success" type="submit">Send</button>
-    </form>
+    <div class="container">
+        <form action="{% url 'chat:send' %}" method="post" name="myForm" onsubmit="return chCustom()">
+            {% csrf_token %}
+            <label for="myInput">Enter name</label>
+            <input autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" name="username"
+                   style="background-color: #b8daff"
+                   class="form-control" type="text" placeholder="Username.." id="myInput" value=""
+                   onkeyup="filterFunction()">
+            <div id="myDropdown" class="dropdown">
+                {% for user in user_info %}
+                    <p class="btn btn-outline-success" id="item" style="display: none" id="{{ user.username }}"
+                       onclick="changeValue('{{ user.username }}')">{{ user.username }}
+                        {% if user.first_name or user.last_name %}-> {{ user|get_name }}{% endif %}</p>
+                {% endfor %}
+            </div>
+            <label for="message"></label>
+            <textarea style="background-color: #b8daff" class="form-control" name="message" id="message"
+                      rows="10"></textarea>
+            <button class="btn btn-outline-success" type="submit">Send</button>
+        </form>
+    </div>
     <script>
-    /* When the user clicks on the button,
-    toggle between hiding and showing the dropdown content */
+        /* When the user clicks on the button,
+        toggle between hiding and showing the dropdown content */
         function changeValue(rec_id) {
             document.getElementById("myInput").value = rec_id;
             myFunction();
@@ -56,11 +61,13 @@
                 }
             }
         }
+
         function chCustom() {
             const valueForm22 = document.getElementById("myInput").value;
-            const infoFound = {{ user_list | safe }}
-            for(i = 0; i < infoFound.length; i++) {
-                if(infoFound[i] === valueForm22) {
+            const infoFound =
+            {{ user_list | safe }}
+            for (i = 0; i < infoFound.length; i++) {
+                if (infoFound[i] === valueForm22) {
                     return true;
                 }
             }

@@ -1,24 +1,26 @@
 {% extends 'base/base.html' %}
 {% block content %}
-    <div class="col-md-6">
-        <label for="chat-message-input"></label>
-        <textarea rows="2" class="form-control" type="text" name="message" id="chat-message-input"></textarea>
-        <input id="chat-message-submit" value="Send" type="button" class="btn btn-outline-success">
-        {{ room_name|json_script:"room-name" }}
-        <div id="chat">
-            {% for message_obj in message_list_obj %}
-                {% if user.username == message_obj.sender.username %}
-                    <div class="row">
-                        <div class="col-auto"><p class="alert-success">{{ message_obj.message }}</p></div>
-                        <div class="col"></div>
-                    </div>
-                {% else %}
-                    <div class="row">
-                        <div class="col"></div>
-                        <div class="ml-md-auto"><p class="alert-primary">{{ message_obj.message }}</p></div>
-                    </div>
-                {% endif %}
-            {% endfor %}
+    <div class="container">
+        <div class="col-md-6">
+            <label for="chat-message-input"></label>
+            <textarea rows="2" class="form-control" type="text" name="message" id="chat-message-input"></textarea>
+            <input id="chat-message-submit" value="Send" type="button" class="btn btn-outline-success">
+            {{ room_name|json_script:"room-name" }}
+            <div id="chat">
+                {% for message_obj in message_list_obj %}
+                    {% if user.username == message_obj.sender.username %}
+                        <div class="row">
+                            <div class="col-auto"><p class="alert-success">{{ message_obj.message }}</p></div>
+                            <div class="col"></div>
+                        </div>
+                    {% else %}
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="ml-md-auto"><p class="alert-primary">{{ message_obj.message }}</p></div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
     <script>

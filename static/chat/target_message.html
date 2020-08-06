@@ -1,5 +1,5 @@
-{% extends 'base/message_base.html' %}
-{% block content_message %}
+{% extends 'base/base.html' %}
+{% block content %}
     <p>To: {{ title }}</p>
     <form action="{% url 'message:target' recipient_id %}" method="post">
         {% csrf_token %}
@@ -7,4 +7,4 @@
         <textarea class="form-control" name="message" id="message" rows="10"></textarea>
         <button class="btn btn-outline-success" type="submit">Send</button>
     </form>
-{% endblock content_message %}
+{% endblock content %}

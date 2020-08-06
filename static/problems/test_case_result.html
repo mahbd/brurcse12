@@ -1,5 +1,5 @@
-{% extends 'base/problem_base.html' %}
-{% block content2 %}
+{% extends 'base/base.html' %}
+{% block content %}
     <div class="container text-white">
         <h6>Your code</h6>
         <pre class="text-white">{{ result.code }}</pre>
@@ -24,4 +24,4 @@
             <h3 class="text-danger">Sorry. Check input and your code carefully.</h3>
         {% endif %}
     </div>
-{% endblock content2 %}
+{% endblock content %}

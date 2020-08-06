@@ -3,6 +3,14 @@ from django.template.defaulttags import register
 
 @register.filter
 def get_name(user):
+    name = user.first_name + " " + user.last_name
+    if name == ' ':
+        return user.username
+    return name
+
+
+@register.filter
+def get_nick_name(user):
     try:
         name = user.userinfo.nick_name
     except:

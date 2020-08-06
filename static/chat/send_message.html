@@ -1,6 +1,6 @@
-{% extends 'base/message_base.html' %}
+{% extends 'base/base.html' %}
 {% load custom_tags %}
-{% block content_message %}
+{% block content %}
     <form action="{% url 'chat:send' %}" method="post" name="myForm" onsubmit="return chCustom()">
         {% csrf_token %}
         <label for="myInput">Enter name</label>
@@ -68,4 +68,4 @@
             return false
         }
     </script>
-{% endblock content_message %}
+{% endblock content %}

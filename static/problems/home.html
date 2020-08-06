@@ -1,5 +1,5 @@
-{% extends 'base/problem_base.html' %}
-{% block content2 %}
+{% extends 'base/base.html' %}
+{% block content %}
     <div class="container text-white">
         {% for an in ann %}
             <h3>{{ an.text }}</h3>
@@ -39,4 +39,4 @@
             </table>
         {% endif %}
     </div>
-{% endblock content2 %}
+{% endblock content %}

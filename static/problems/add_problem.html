@@ -1,5 +1,5 @@
-{% extends 'base/problem_base.html' %}
-{% block content2 %}
+{% extends 'base/base.html' %}
+{% block content %}
     <div class="container bg-white text-dark">
         <h2>Add problem</h2>
         <form action="{% url 'problems:add_problem' contest_id %}" method="post">
@@ -63,4 +63,4 @@
             textarea.value = editor.getSession().getValue();
         });
     </script>
-{% endblock content2 %}
+{% endblock content %}

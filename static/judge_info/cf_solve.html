@@ -1,21 +1,24 @@
-{% extends 'base/judge_base.html' %}
-{% block content2 %}
-    <p>Auto updates every 3 hours.<a href="http://judge-info.herokuapp.com/cf/update/" class="btn btn-info">Update</a>
-    </p>
-    <table class="table table-dark">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Solved</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for person in all_person %}
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container text-white">
+        <p>Auto updates every 3 hours.<a href="http://judge-info.herokuapp.com/cf/update/"
+                                         class="btn btn-info">Update</a>
+        </p>
+        <table class="table table-dark">
+            <thead>
             <tr>
-                <td>{{ person.0 }}</td>
-                <td>{{ person.1 }}</td>
+                <th scope="col">Name</th>
+                <th scope="col">Solved</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-{% endblock content2 %}
+            </thead>
+            <tbody>
+            {% for person in all_person %}
+                <tr>
+                    <td>{{ person.0 }}</td>
+                    <td>{{ person.1 }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

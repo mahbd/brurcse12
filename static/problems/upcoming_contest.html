@@ -1,5 +1,5 @@
-{% extends 'base/problem_base.html' %}
-{% block content2 %}
+{% extends 'base/base.html' %}
+{% block content %}
     <p class="display-4 text-white">{{ name }}</p>
     <p class="display-4 text-white" id="startTime" hidden="hidden">{{ date }}</p>
     <p class="display-4 text-white">Starting After:</p>
@@ -35,4 +35,4 @@
             }
         }, 1000);
     </script>
-{% endblock content2 %}
+{% endblock content %}

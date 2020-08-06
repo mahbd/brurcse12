@@ -1,5 +1,5 @@
-{% extends 'base/message_base.html' %}
-{% block content_message %}
+{% extends 'base/base.html' %}
+{% block content %}
     <div class="col-md-6">
         <form method="post" action="{% url 'message:conversation' recipient_id %}">
             {% csrf_token %}
@@ -36,4 +36,4 @@
             </ul>
         </div>
     </div>
-{% endblock content_message %}
+{% endblock content %}

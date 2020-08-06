@@ -1,6 +1,6 @@
-{% extends 'base/message_base.html' %}
+{% extends 'base/base.html' %}
 {% load custom_tags %}
-{% block content_message %}
+{% block content %}
     <div class="container text-white">
         {% for  sender, message in message_list.items %}
             <a href="{% url 'chat:conversation' sender_ids|get_item:sender %}">{{ sender }}</a>
@@ -25,4 +25,4 @@
             </ul>
         </div>
     </div>
-{% endblock content_message %}
+{% endblock content %}

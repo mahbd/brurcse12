@@ -1,5 +1,5 @@
-{% extends 'base/message_base.html' %}
-{% block content_message %}
+{% extends 'base/base.html' %}
+{% block content %}
     <div class="col-md-6">
         <label for="chat-message-input"></label>
         <textarea rows="2" class="form-control" type="text" name="message" id="chat-message-input"></textarea>
@@ -81,4 +81,4 @@
             messageInputDom.value = '';
         };
     </script>
-{% endblock content_message %}
+{% endblock content %}

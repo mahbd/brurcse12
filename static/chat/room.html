@@ -1,6 +1,6 @@
-{% extends 'base/message_base.html' %}
+{% extends 'base/base.html' %}
 {% load custom_tags %}
-{% block content_message %}
+{% block content %}
     <label for="chat-log"></label>
     <div class="col-md-6">
         <label for="chat-message-input"></label>
@@ -94,4 +94,4 @@
             messageInputDom.value = '';
         };
     </script>
-{% endblock content_message %}
+{% endblock content %}

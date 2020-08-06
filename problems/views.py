@@ -241,7 +241,7 @@ def ended_contest(request, contest_id):
 
 def standing(request, contest_id=False):
     if not contest_id:
-        contest_id = DData.objects.get(name='current_standing')
+        contest_id = DData.objects.get(name='current_standing').data
     data = {
         'contest_id': contest_id,
         "JAT": JAT,

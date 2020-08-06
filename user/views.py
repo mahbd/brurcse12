@@ -77,15 +77,12 @@ def edit_info(request):
 
 
 def user_info(request):
-    try:
-        blood_group = UserInfo.objects.get(user_id=request.user.id).blood_group
-    except UserInfo.DoesNotExist:
-        blood_group = "Not Provided"
+    UserInfo.objects.get_or_create(user_id=request.user.id)
     context = {
         'first_name': request.user.first_name,
         'last_name': request.user.last_name,
         'email': request.user.email,
-        'blood_group': blood_group,
+        'blood_group': request.user.userinfo.blood_group,
         'joined_on': request.user.date_joined,
         'last_visited': request.user.last_login,
         'cf_handle': request.user.userinfo.handle,

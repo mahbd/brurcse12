@@ -8,7 +8,9 @@
             {% for contest in running_contests %}
                 <div class="card mb3 text-dark">
                     <div class="card-header">
-                        <p>By: {{ contest.creator }}...Start: {{ contest.start_time }}...End: {{ contest.end_time }}</p>
+                        <div class="row"><p>Created By: {{ contest.creator }}</p>
+                            <p>Tested by: {{ contest.tester }}</p>
+                            Start: {{ contest.start_time }}...End: {{ contest.end_time }}</div>
                     </div>
                     <div class="card-body">
                         <a href="{% url 'problems:contest_problem' contest.id %}">{{ contest.contest_name }}</a>
@@ -24,9 +26,12 @@
             {% for contest in upcoming_contests %}
                 <div class="card mb3 text-dark">
                     <div class="card-header">
-                        <p>By: {{ contest.creator }}...Start: {{ contest.start_time }}...End: {{ contest.end_time }}</p>
+                        <div class="row"><p>Created By: {{ contest.creator }}</p>
+                            <p class="ml-auto">Tested by: {{ contest.tester }}</p></div>
+                        <div class="row"><p>Start: {{ contest.start_time }}</p>
+                            <p class="ml-auto">End: {{ contest.end_time }}</p></div>
                     </div>
-                    {% if user.is_staff %}
+                    {% if user.is_staff or user.user_info.nick_name == contest.creator or user.userinfo.nick_name == contest.tester %}
                         <div class="card-body">
                             <a href="{% url 'problems:contest_problem' contest.id %}">{{ contest.contest_name }}</a>
                         </div>

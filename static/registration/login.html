@@ -1,26 +1,27 @@
 {% extends 'base/base.html' %}
 {% block content %}
     <div class="container">
-        <br><br><br>
-        <div class="row">
-            <div class="col"></div>
-            <div class="col-auto card">
+        <div class="row align-middle">
+        <div class="col-lg-3 col-md-3"></div>
+            <div class="col-auto">
                 {% if form.errors %}
                     <p class="card-text">Your username and password didn't match. Please try again.</p>
                 {% endif %}
-                <form class="card-text" method="post" action="{% url 'users:login' %}">
-                    <p class="alert-info">Please enter correct username and password. If you<br>are new then create new
-                        account by pressing register</p>
+                <form class="card-text box" method="post" action="{% url 'users:login' %}">
+                    <p class="text-muted"> Please enter your login and password!</p>
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    <p class="text-muted h4">Username</p>
+                    {{ form.username }}
+                    <p class="text-muted h4">Username</p>
+                    {{ form.password }}
                     <div class="form-group">
-                        <button class="btn btn-success" name="submit">Log in</button>
-                        <a class="btn-lg btn-info ml-auto" href="{% url 'users:reset_pass_form' %}">Reset Password</a>
+                        <a href="{% url 'users:reset_pass_form' %}" class="text-muted">Forget password?</a>
+                        <input type="submit" name="" value="Login" href="{% url 'users:info' %}">
+                        <a href="{% url 'users:create' %}" class="text-muted h4">New user</a>
                     </div>
-                    <input class="card-deck" type="hidden" name="next" value="{% url 'home:home' %}"/>
+                    <input class="card-deck" type="hidden" name="next" value="{% url 'users:info' %}"/>
                 </form>
             </div>
-            <div class="col"></div>
         </div>
     </div>
 {% endblock content %}

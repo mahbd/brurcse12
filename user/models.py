@@ -16,7 +16,7 @@ bg = (
 
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True)
-    blood_group = models.CharField(max_length=5, blank=True, choices=bg)
+    blood_group = models.CharField(max_length=5, blank=True, choices=bg, default="NOT")
     user_code = models.CharField(max_length=100, default='not_added')
     handle = models.CharField(max_length=100, default='not_added')
     profile = models.CharField(max_length=100, default='not_added')

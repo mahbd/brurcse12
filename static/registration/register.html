@@ -1,22 +1,24 @@
 {% extends 'base/base.html' %}
 {% block content %}
     <div class="container">
-        <br><br>
         <div class="row">
-            <div class="col"></div>
-            <div class="col-auto card">
-                <form method="post" action="{% url 'users:create' %}">
+            <div class="col-auto">
+                <form class="box" method="post" action="{% url 'users:create' %}">
                     {% csrf_token %}
-                    {{ forms.as_p }}
+                    <p class="text-muted h4">Username</p>
+                    {{ forms.username }}
+                    <p class="text-muted h4">Password</p>
+                    {{ forms.password1 }}
+                    <p class="text-muted h4">Give password again</p>
+                    {{ forms.password2 }}
                     <div class="form-group">
-                        <button class="btn btn-success" name="submit">Register</button>
-                        <a class="btn-lg btn-success" href="{% url 'users:login' %}">Login</a>
-                        <a class="btn-lg btn-info ml-auto" href="{% url 'users:reset_pass_form' %}">Reset</a>
+                        <input type="submit" name="" value="Register" href="{% url 'users:info' %}">
+                        <a class="text-success h4" href="{% url 'users:login' %}">Already user</a><br><p></p>
+                        <a class="text-muted h4" href="{% url 'users:reset_pass_form' %}">Reset Password</a>
                     </div>
                     <input type="hidden" name="next" value="{% url 'home:home' %}"/>
                 </form>
             </div>
-            <div class="col"></div>
         </div>
     </div>
 {% endblock content %}

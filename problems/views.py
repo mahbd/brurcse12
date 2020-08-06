@@ -73,6 +73,7 @@ def problems(request):  # All visible problem list
     return render(request, 'problems/home.html', context)
 
 
+@login_required
 def problem(request, problem_id, contest_id=0):  # Single problem
     data = {
         "problem_id": problem_id,
@@ -157,6 +158,10 @@ def contest_list(request):
         end_time = end_time.astimezone(tz_dhaka)
         try:
             cc['creator'] = User.objects.get(username=cc['creator']).userinfo.nick_name
+        except User.DoesNotExist:
+            pass
+        try:
+            cc['tester'] = User.objects.get(username=cc['tester']).userinfo.nick_name
         except User.DoesNotExist:
             pass
         cc['start_time'] = datetime.strftime(start_time, "%d %b %y::%I:%M %P")
@@ -277,6 +282,10 @@ def all_submissions(request):
         return HttpResponse(res['status'])
     sub_list = res['process']
     for sub in sub_list:
+        try:
+            sub[1] = User.objects.get(username=sub[1]).userinfo.nick_name
+        except User.DoesNotExist:
+            pass
         time = time_convert(sub[0])
         sub[0] = datetime.strftime(time, "%D %I:%M %P")
     paginator = Paginator(sub_list, 25)

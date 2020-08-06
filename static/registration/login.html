@@ -5,7 +5,7 @@
         <div class="col-lg-3 col-md-3"></div>
             <div class="col-auto">
                 {% if form.errors %}
-                    <p class="card-text">Your username and password didn't match. Please try again.</p>
+                    <p class="text-danger">Your username and password didn't match. Please try again.</p>
                 {% endif %}
                 <form class="card-text box" method="post" action="{% url 'users:login' %}">
                     <p class="text-muted"> Please enter your login and password!</p>

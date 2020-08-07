@@ -10,7 +10,7 @@ def index(request):
     ann_obj = Announce.objects.all()[:6]
     tut_obj = Tutorial.objects.all()[:6]
     pic_links = DData.objects.filter(type='home_gal')
-    about_us = DData.objects.get(name="about_us")
+    about_us = DData.objects.get(name="about_us").data
     context = {
         'title': 'Home',
         'ann_obj': ann_obj,

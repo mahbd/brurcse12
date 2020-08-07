@@ -2,7 +2,7 @@
 {% block content %}
     <div class="container">
         <p>To: {{ title }}</p>
-        <form action="{% url 'message:target' recipient_id %}" method="post">
+        <form action="{% url 'chat:target_message' recipient_id %}" method="post">
             {% csrf_token %}
             <label for="message"></label>
             <textarea class="form-control" name="message" id="message" rows="10"></textarea>

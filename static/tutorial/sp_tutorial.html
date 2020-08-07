@@ -11,7 +11,7 @@
                     {% if user.username == tutorial.owner.username or user.id == 1 or user.id == 2 %}
                         <a href="{% url 'tutorial:edit' tutorial.id %}">edit</a>
                     {% else %}
-                        <a href="{% url 'message:target' tutorial.owner.id %}">request correction</a>
+                        <a href="{% url 'chat:target_message' tutorial.owner.id %}">request correction</a>
                     {% endif %}
                     <br>Date: {{ tutorial.date }} by: {{ tutorial.owner|get_name }}
                 </div>

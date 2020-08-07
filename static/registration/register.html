@@ -1,6 +1,9 @@
 {% extends 'base/base.html' %}
 {% block content %}
     <div class="container">
+    {% if forms.errors %}
+        <p class="text-danger">Sorry.. Give strong password..  In both place password should be same</p>
+    {% endif %}
         <div class="row">
             <div class="col-auto">
                 <form class="box" method="post" action="{% url 'users:create' %}">

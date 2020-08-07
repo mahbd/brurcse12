@@ -12,7 +12,7 @@
                     {% csrf_token %}
                     <p class="text-muted h4">Username</p>
                     {{ form.username }}
-                    <p class="text-muted h4">Username</p>
+                    <p class="text-muted h4">Password</p>
                     {{ form.password }}
                     <div class="form-group">
                         <a href="{% url 'users:reset_pass_form' %}" class="text-muted">Forget password?</a>

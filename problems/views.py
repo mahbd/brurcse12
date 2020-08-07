@@ -215,7 +215,8 @@ def upcoming_contest(request, contest_id):
         return HttpResponse(response['status'])
     context = {
         "date": response['start_time'],
-        "name": response['contest_name']
+        "name": response['contest_name'],
+        "contest_id": contest_id,
     }
     return render(request, 'problems/upcoming_contest.html', context)
 

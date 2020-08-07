@@ -3,6 +3,7 @@
     <div class="container">
     {% if forms.errors %}
         <p class="text-danger">Sorry.. Give strong password..  In both place password should be same</p>
+        <p class="text-danger">{{ forms.error_messages }}</p>
     {% endif %}
         <div class="row">
             <div class="col-auto">
@@ -10,7 +11,11 @@
                     {% csrf_token %}
                     <p class="text-muted h4">Username</p>
                     {{ forms.username }}
-                    <p class="text-muted">password must contain a number, an alphabet and a special character. it must be more than 8 character</p>
+                    <p class="text-danger h4">Password must be good. A good password must have:</p>
+                    <p class="text-danger">Must have at least 1 upper hand and 1 lower hand alphabet</p>
+                    <p class="text-danger">Must have a special character (,@#)</p>
+                    <p class="text-danger">Must be more at least 8 characters and less than 15 characters</p>
+                    <p>{{ forms.message }}</p>
                     <p class="text-muted h4">Password</p>
                     {{ forms.password1 }}
                     <p class="text-muted h4">Give password again</p>

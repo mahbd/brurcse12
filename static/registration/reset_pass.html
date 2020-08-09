@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col"></div>
             <div class="col-auto card">
-                <form method="post" action="{% url 'users:reset_pass' tok %}">
+                <form class="box" method="post" action="{% url 'users:reset_pass' tok %}">
                     {% csrf_token %}
                     {{ forms }}
                     <button class="btn-lg btn-success" type="submit">Save</button>

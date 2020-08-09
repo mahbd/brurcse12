@@ -7,7 +7,7 @@
                 {% if form.errors %}
                     <p class="text-danger">Your username and password didn't match. Please try again.</p>
                 {% endif %}
-                <form class="card-text box" method="post" action="{% url 'users:login' %}">
+                <form class="box rounded-pill" method="post" action="{% url 'users:login' %}">
                     <p class="text-muted"> Please enter your login and password!</p>
                     {% csrf_token %}
                     <p class="text-muted h4">Username</p>

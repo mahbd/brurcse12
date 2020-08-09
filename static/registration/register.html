@@ -1,33 +1,35 @@
 {% extends 'base/base.html' %}
 {% block content %}
     <div class="container">
-    {% if forms.errors %}
-        <p class="text-danger">Sorry.. Give strong password..  In both place password should be same</p>
-        <p class="text-danger">{{ forms.error_messages }}</p>
-    {% endif %}
         <div class="row">
+            <div class="col"></div>
             <div class="col-auto">
-                <form class="box" method="post" action="{% url 'users:create' %}">
+                <form class="box rounded-pill" method="post" action="{% url 'users:create' %}">
                     {% csrf_token %}
+                    <div class="text-danger">
+                        {% if forms.errors %}
+                            {{ forms.errors }}
+                        {% endif %}
+                    </div>
                     <p class="text-muted h4">Username</p>
                     {{ forms.username }}
-                    <p class="text-danger h4">Password must be good. A good password must have:</p>
-                    <p class="text-danger">Must have at least 1 upper case and 1 lower case alphabet</p>
-                    <p class="text-danger">Must have a special character (,@)</p>
-                    <p class="text-danger">Must be more at least 8 characters and less than 15 characters</p>
-                    <p>{{ forms.message }}</p>
+                    <div class="bg-info h5">
+                        <p>{{ forms.password1.help_text }}</p>
+                    </div>
                     <p class="text-muted h4">Password</p>
                     {{ forms.password1 }}
-                    <p class="text-muted h4">Give password again</p>
+                    <p class="text-muted h4">Password again</p>
                     {{ forms.password2 }}
                     <div class="form-group">
                         <input type="submit" name="" value="Register" href="{% url 'users:info' %}">
-                        <a class="text-success h4" href="{% url 'users:login' %}">Already user</a><br><p></p>
+                        <a class="text-success h4" href="{% url 'users:login' %}">Already user</a><br>
+                        <p></p>
                         <a class="text-muted h4" href="{% url 'users:reset_pass_form' %}">Reset Password</a>
                     </div>
                     <input type="hidden" name="next" value="{% url 'home:home' %}"/>
                 </form>
             </div>
+            <div class="col"></div>
         </div>
     </div>
 {% endblock content %}

@@ -86,7 +86,11 @@ def problem(request, problem_id, contest_id=0):  # Single problem
         if request.user.is_staff:
             pass
         elif request.user.username != problem_info["problem"]["creator"]:
-            return HttpResponse('Contest is running')
+            context = {
+                'title': 'not allowed',
+                'danger': 'Sorry!! You are not allowed to view this'
+            }
+            return render(request, 'base/different_message.html', context)
     problem_info = problem_info['problem']
     context = {
         'title': "problem",
@@ -325,7 +329,7 @@ def submission(request, sub_id):
             context = {
                 "info": "Contest is running. Please try this after contest"
             }
-            return render(request, 'base/not_allowed.html', context)
+            return render(request, 'base/different_message.html', context)
     time = time_convert(response['process']['date'])
     response['process']['date'] = datetime.strftime(time, "%D %I:%M %P")
     context = {

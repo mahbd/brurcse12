@@ -3,8 +3,11 @@
     <div class="container text-white">
         <div class="col"></div>
         <div class="col-auto">
-            <a class="display-4" href="{% url 'users:login' %}">Log in here</a>
+            <a class="h3" href="{% url 'users:login'  %}" id="login">Logged out</a>
         </div>
         <div class="col"></div>
     </div>
+    <script>
+    window.location.href = document.getElementById('login').getAttribute('href')
+    </script>
 {% endblock content %}

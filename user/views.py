@@ -1,10 +1,11 @@
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
-from home.all_functions import email_validation, token_generator, get_name
+from django.contrib.auth import login, authenticate
+from home.all_functions import token_generator
 from .models import UserInfo, Token
+from .forms import UserInfoForm, UploadFileForm
 from django.contrib.auth.models import User
 from mysite.settings import EMAIL_HOST_USER
 
@@ -14,7 +15,17 @@ def create_account(request):
         new_user = UserCreationForm(data=request.POST)
         if new_user.is_valid():
             new_user.save()
-            return redirect('users:login')
+            username = request.POST['username']
+            password = request.POST['password1']
+            user = authenticate(request, username=username, password=password)
+            login(request, user)
+            return redirect('users:info')
+        else:
+            context = {
+                "title": "errors",
+                "forms": new_user,
+            }
+            return render(request, 'registration/register.html', context)
     forms = UserCreationForm()
     context = {
         'title': 'Create Account',
@@ -26,56 +37,34 @@ def create_account(request):
 @login_required
 def edit_info(request):
     if request.method == 'POST':
-        email = request.POST['email']
-        e_obj = email_validation(request.user, email)
-        if not e_obj:
-            context = {
-                'title': 'already used',
-                'class': 'alert-danger',
-                'text': 'email is already used by someone. Please try another email.'
-            }
-            return render(request, 'registration/alert_page.html', context)
-        elif e_obj.id != request.user.id:
-            context = {
-                'title': 'already used',
-                'class': 'alert-danger',
-                'text': e_obj.email + ' is already used by ' + get_name(e_obj) + ' . Please try another email.'
-            }
-            return render(request, 'registration/alert_page.html', context)
-        else:
-            user_obj = User.objects.get(id=request.user.id)
-            try:
-                inf_obj = UserInfo.objects.get(user=user_obj)
-            except UserInfo.DoesNotExist:
-                inf_obj = UserInfo(user=user_obj)
-            try:
-                user_obj.email = request.POST['email']
-                user_obj.first_name = request.POST['first_name']
-                user_obj.last_name = request.POST['last_name']
-                inf_obj.blood_group = request.POST['blood_group']
-                user_obj.save()
-                inf_obj.save()
-            except KeyError:
-                return HttpResponse("Internal error")
+        forms = UserInfoForm(data=request.POST)
+        if forms.is_valid():
+            forms.save()
             return redirect('users:info')
-    bg_options = ['NOT', 'A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
-    try:
-        user = UserInfo.objects.get(user_id=request.user.id)
-        blood_group = user.blood_group
-    except UserInfo.DoesNotExist:
-        blood_group = 'NOT'
+    form = UserInfoForm(instance=request.user.userinfo)
     context = {
         'title': 'Edit info',
-        'username': request.user.username,
-        'first_name': request.user.first_name,
-        'last_name': request.user.last_name,
-        'email': request.user.email,
-        'blood_group': blood_group,
-        'bg_options': bg_options,
+        'forms': form
     }
     return render(request, 'registration/edit_user_info.html', context)
 
 
+@login_required
+def add_profile_image(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        print(form)
+        if form.is_valid():
+            user = UserInfo.objects.get(user=request.user)
+            user.profile_image = request.FILES['file']
+            user.save()
+            return redirect('users:info')
+    else:
+        form = UploadFileForm()
+    return render(request, 'registration/add_profile_picture.html', {'form': form})
+
+
+@login_required
 def user_info(request):
     UserInfo.objects.get_or_create(user_id=request.user.id)
     context = {
@@ -93,21 +82,6 @@ def user_info(request):
     return render(request, 'registration/user_info.html', context)
 
 
-def mailing(request):
-    send_mail(
-        'How are you',
-        'It is long time we talked. Now asking, how are you?',
-        'mahmuduly2000@gmail.com',
-        ['mahmudula2000@gmail.com'],
-        fail_silently=False
-    )
-    return HttpResponse("Success")
-
-
-def test(request):
-    return
-
-
 def reset_pass_form(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -118,13 +92,7 @@ def reset_pass_form(request):
             new_tok.save()
             message = "We are sorry that you forgot your password. But don't worry, you can change it now. click the " \
                       "link to reset brurcse12.herokuapp.com/user/reset_pass/" + token
-            khk = send_mail(
-                'Reset password',
-                message,
-                EMAIL_HOST_USER,
-                [user.email],
-                fail_silently=False
-            )
+            khk = send_mail('Reset password', message, EMAIL_HOST_USER, [user.email], fail_silently=False)
             print(khk)
             context = {
                 'title': 'success',
@@ -146,7 +114,9 @@ def reset_pass_form(request):
 
 
 def reset_pass(request, token):
+    # Send form to User
     if request.method != 'POST':
+        # Token Problem
         try:
             tok_obj = Token.objects.get(token=token)
         except Token.DoesNotExist:
@@ -165,15 +135,16 @@ def reset_pass(request, token):
             'tok': tok_obj.token
         }
         return render(request, 'registration/reset_pass.html', context)
+    # Password form Token problem
     try:
         tok_obj = Token.objects.get(token=token)
     except Token.DoesNotExist:
         context = {
-            'title': 'Failed',
-            'class': 'alert-danger',
-            'text': 'Seems to be hacker. Password changes aborted'
+            'title': 'Not allowed',
+            'danger': 'Seems to be hacker. Password changes aborted'
         }
-        return render(request, 'registration/alert_page.html', context)
+        return render(request, 'base/different_message.html', context)
+    # Create form
     forms = SetPasswordForm(User.objects.get(id=tok_obj.identity), data=request.POST)
     if forms.is_valid():
         forms.save()

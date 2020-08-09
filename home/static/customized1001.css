@@ -9,6 +9,9 @@
 .padding10 {
     padding-left: 10px;
 }
+.paddingM100 {
+    padding-top: -100px;
+}
 
 body {
     background-color: #616161
@@ -78,16 +81,15 @@ body {
 .box {
     width: 500px;
     padding: 40px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    position: relative;
     background: #191919;;
     text-align: center;
     transition: 0.25s;
-    margin-top: 100px
+    margin-top: 10px
 }
 
 .box input[type="text"],
+.box input[type="email"],
 .box input[type="password"] {
     border: 0;
     background: none;
@@ -96,7 +98,7 @@ body {
     text-align: center;
     border: 2px solid #3498db;
     padding: 10px 10px;
-    width: 250px;
+    width: 350px;
     outline: none;
     color: white;
     font-size: 22px;

@@ -1,13 +1,13 @@
 {% load custom_tags %}
 <div class="container">
     <p class="display-4 text-white">{{ title }}</p>
-    <a href="{% url 'tutorial:add_tut' topic_id %}" class="btn btn-outline-light">Add tutorial</a>
+    <a href="#" onclick="sp_tutorials('tutorial/add/', {{ topic_id }})" class="btn btn-outline-light">Add tutorial</a>
     {% for tutorial in tut_obj %}
         <div class="card mb-3">
             <div class="card-header">
-                <a class="h3" href="{% url 'tutorial:tut' tutorial.id %}">{{ tutorial.tut_title }} </a>
+                <a class="h3" href="#" onclick="sp_tutorials('tutorial/tut/', {{ tutorial.id }})">{{ tutorial.tut_title }} </a>
                 {% if user.username == tutorial.owner.username or user.id == 1 or user.id == 2 %}
-                    <a href="{% url 'tutorial:edit' tutorial.id %}">edit</a>
+                    <a href="#" onclick="sp_tutorials('tutorial/edit/', {{ tutorial.id }})">edit</a>
                 {% else %}
                     <a href="{% url 'chat:target_message' tutorial.owner.id %}">request correction</a>
                 {% endif %}

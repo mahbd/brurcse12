@@ -1,21 +1,18 @@
-{% extends 'base/base.html' %}
-{% block content %}
-    <div class="container text-white">
-        <p class="display-4 text-white">Add tutorial</p>
-        <form method="post" name="MyForm" action="{% url 'tutorial:add_tut' topic_id %}" onsubmit="return validateForm()">
-            <div class="form-group">
-                <h5 class="text-white">Category: {{ title }} </h5>
-                <label for="Title">Tutorial title</label>
-                <input value="" style="background-color: #b8daff" name="annTitle" type="text" class="form-control"
-                       id="Title" aria-describedby="titleHelp">
-                <small id="titleHelp" class="form-text text-muted">Keep size within 30 character</small>
-            </div>
-            <div class="form-group">
-                <label for="Text">Tutorial text</label>
-                <textarea style="background-color: #b8daff" name="annText" class="form-control" id="Text"
-                          rows="15"></textarea>
-            </div>
-            <button class="btn-lg btn-outline-success font-size25" type="submit">Add</button>
-        </form>
-    </div>
-{% endblock content %}
+<div class="container text-white">
+    <p class="display-4 text-white">Add tutorial</p>
+    <form method="post" name="MyForm" action="{% url 'tutorial:add_tut' topic_id %}" onsubmit="return validateForm()">
+        <div class="form-group">
+            <h5 class="text-white">Category: {{ title }} </h5>
+            <label for="Title">Tutorial title</label>
+            <input value="" style="background-color: #b8daff" name="annTitle" type="text" class="form-control"
+                   id="Title" aria-describedby="titleHelp">
+            <small id="titleHelp" class="form-text text-muted">Keep size within 30 character</small>
+        </div>
+        <div class="form-group">
+            <label for="Text">Tutorial text</label>
+            <textarea style="background-color: #b8daff" name="annText" class="form-control" id="Text"
+                      rows="15"></textarea>
+        </div>
+        <button class="btn-lg btn-outline-success font-size25" type="submit">Add</button>
+    </form>
+</div>

@@ -2,21 +2,51 @@
 {% load custom_tags %}
 {% load static %}
 {% block content %}
-    <div class="container">
+    <div class="container" id="main_body">
         <p class="display-4 text-white">Tutorials</p>
         {% for topic, items in topics.items %}
             <div class="card mb-3">
                 <div class="card-header">
-                    <a href="{% url 'tutorial:sp_tutorials' ids|get_item:topic %}" class="h3">{{ topic }}</a>
-                    <a class="padding10" href="{% url 'tutorial:add_tut' ids|get_item:topic %}">add</a>
+                    <a href="#" class="h3" onclick="sp_tutorials('tutorial/s/', {{ ids|get_item:topic }})">{{ topic }}</a>
+                    <a class="padding10" href="#" onclick="sp_tutorials('tutorial/add/', {{ ids|get_item:topic }})">add</a>
                 </div>
                 <div class="card-body">
                     {% for item in items %}
-                        <a href="{% url 'tutorial:tut' item.id %}"
+                        <a href="#" onclick="sp_tutorials('tutorial/tut/', {{ item.id }})"
                            class="btn btn-outline-success card-text">{{ item.tut_title }}</a>
                     {% endfor %}
                 </div>
             </div>
         {% endfor %}
     </div>
+    <script>
+        function makeHttpObject() {
+            try {
+                return new XMLHttpRequest();
+            } catch (error) {
+            }
+            try {
+                return new ActiveXObject("Msxml2.XMLHTTP");
+            } catch (error) {
+            }
+            try {
+                return new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (error) {
+            }
+
+            throw new Error("Could not create HTTP request object.");
+        }
+        function sp_tutorials(extra_url, topic_id='') {
+            document.getElementById("main_body").innerHTML = "<h2>Loading....</h2>"
+            const url_to_get = "http://127.0.0.1:8000/" + extra_url + topic_id.toString();
+            const request = makeHttpObject();
+            request.open("GET", url_to_get, true);
+            request.send(null);
+            request.onreadystatechange = function () {
+                if (request.readyState === 4) {
+                    document.getElementById("main_body").innerHTML = request.responseText
+                }
+            };
+        }
+    </script>
 {% endblock content %}

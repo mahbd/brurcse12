@@ -6,13 +6,13 @@
     <div class="card mb-3">
         <h4 class="card-header">
             {% if tut_obj.question_link %}
-                <a href="{{ tut_obj.question_link }}">{{ title }}</a>
+                <a href="{{ tut_obj.question_link }}" target="_blank">{{ title }}</a>
             {% else %}
                 {{ title }}
             {% endif %}
             <small>
                 {% if user.id == tut_obj.owner_id or user.id == 1 or user.id == 2 %}
-                    <a href="{% url 'tutorial:edit' tut_obj.id %}">edit</a>
+                    <a href="#" onclick="sp_tutorials('tutorial/edit/', {{ tut_obj.id }})">edit</a>
                 {% else %}
                     <a href="{% url 'chat:target_message' tut_obj.owner_id %}">request correction</a>
                 {% endif %}

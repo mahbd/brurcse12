@@ -1,25 +1,24 @@
-{% extends 'base/base.html' %}
-{% block content %}
-    <div class="container text-white">
-        <p class="display-4 text-white">Edit tutorial</p>
-        <form method="post" name="annForm" action="{% url 'tutorial:edit' tut_id %}" onsubmit="return validateForm()">
-            <div class="form-group">
-                <h5 class="text-white">Category: {{ topic }} </h5>
-                <label for="AnnTitle">Tutorial title</label>
-                <input value="{{ title }}" style="background-color: #b8daff" name="annTitle" type="text" class="form-control"
-                       id="AnnTitle" aria-describedby="titleHelp">
-                <small id="titleHelp" class="form-text text-muted">Keep size within 15 character</small>
-                {% if annLink %}
+<div class="container text-white">
+    <p class="display-4 text-white">Edit tutorial</p>
+    <form method="post" name="annForm" action="{% url 'tutorial:edit' tut_id %}" onsubmit="return validateForm()">
+        <div class="form-group">
+            <h5 class="text-white">Category: {{ topic }} </h5>
+            <label for="AnnTitle">Tutorial title</label>
+            <input value="{{ title }}" style="background-color: #b8daff" name="annTitle" type="text"
+                   class="form-control"
+                   id="AnnTitle" aria-describedby="titleHelp">
+            <small id="titleHelp" class="form-text text-muted">Keep size within 15 character</small>
+            {% if annLink %}
                 <label for="annLink">Tutorial link</label>
-                <input value="{{ annLink }}" style="background-color: #b8daff" class="form-control" name="annLink" type="text" id="annLink">
-                {% endif %}
-            </div>
-            <div class="form-group">
-                <label for="AnnText">Tutorial text</label>
-                <textarea style="background-color: #b8daff" name="annText" class="form-control" id="AnnText"
-                          rows="15">{{ text }}</textarea>
-            </div>
-            <button class="btn-lg btn-outline-success font-size25" type="submit">Save</button>
-        </form>
-    </div>
-{% endblock content %}
+                <input value="{{ annLink }}" style="background-color: #b8daff" class="form-control" name="annLink"
+                       type="text" id="annLink">
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="AnnText">Tutorial text</label>
+            <textarea style="background-color: #b8daff" name="annText" class="form-control" id="AnnText"
+                      rows="15">{{ text }}</textarea>
+        </div>
+        <button class="btn-lg btn-outline-success font-size25" type="submit">Save</button>
+    </form>
+</div>

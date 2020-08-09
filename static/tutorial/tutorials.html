@@ -2,6 +2,7 @@
 {% load custom_tags %}
 {% load static %}
 {% block content %}
+    <a id="baseUrl" hidden="hidden" href="{% url 'home:home' %}"></a>
     <div class="container" id="main_body">
         <p class="display-4 text-white">Tutorials</p>
         {% for topic, items in topics.items %}
@@ -37,14 +38,15 @@
             throw new Error("Could not create HTTP request object.");
         }
         function sp_tutorials(extra_url, topic_id='') {
-            document.getElementById("main_body").innerHTML = "<h2>Loading....</h2>"
-            const url_to_get = "http://brurcse12.herokuapp.com/" + extra_url + topic_id.toString();
+            document.getElementById("main_body").innerHTML = "<h2 class='text-success'>Loading....</h2>";
+            const baseUrl = document.getElementById("baseUrl").getAttribute("href");
+            const url_to_get = baseUrl + extra_url + topic_id.toString();
             const request = makeHttpObject();
             request.open("GET", url_to_get, true);
             request.send(null);
             request.onreadystatechange = function () {
                 if (request.readyState === 4) {
-                    document.getElementById("main_body").innerHTML = request.responseText
+                    document.getElementById("main_body").innerHTML = request.responseText;
                 }
             };
         }

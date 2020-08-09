@@ -38,7 +38,7 @@
         }
         function sp_tutorials(extra_url, topic_id='') {
             document.getElementById("main_body").innerHTML = "<h2>Loading....</h2>"
-            const url_to_get = "http://127.0.0.1:8000/" + extra_url + topic_id.toString();
+            const url_to_get = "http://brurcse12.herokuapp.com/" + extra_url + topic_id.toString();
             const request = makeHttpObject();
             request.open("GET", url_to_get, true);
             request.send(null);

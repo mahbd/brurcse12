@@ -2,20 +2,16 @@
 {% load static %}
 {% block content %}
     <div class="container text-white">
-    <!--
         <p>Exclude yourself to find easiest unsolved problem</p>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false"> Exclude
+        <div class="dropdown2">
+            <button class="btn btn-success"> Exclude
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-content">
                 {% for handle in all_handle %}
-                    <a class="dropdown-item" href="{% url 'jInfo:cfl_ex' handle.handle %}">{{ handle.nick_name }}</a>
+                    <a href="{% url 'jInfo:cfl_ex' handle.handle %}">{{ handle.nick_name }}</a>
                 {% endfor %}
             </div>
         </div>
-        -->
         <h3 class="text-white">Codeforces problem name list</h3>
         <table class="table table-dark table-bordered table-responsive">
             <thead>

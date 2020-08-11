@@ -239,6 +239,8 @@ def ended_contest(request, contest_id):
     problem_list = requests.post('http://' + b_u_a + '/compiler/get_contest_problems/', data=data).json()
     if not problem_list['correct']:
         return HttpResponse(problem_list['correct'])
+    if problem_list['restricted'] == 'submitter':
+        return redirect('problems:upcoming_contest', contest_id)
     problem_list = problem_list['problems']
     for m in problem_list:
         print(m['problem_name'])

@@ -423,8 +423,6 @@ def test_case_list(request, problem_id):
 
 @login_required
 def add_test_case(request, problem_id):
-    if not request.user.is_staff:
-        return Http404
     if request.method == 'POST':
         data = {
             'problem_id': problem_id,

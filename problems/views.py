@@ -199,9 +199,10 @@ def contest_problems(request, contest_id):
     problem_list = requests.post('http://' + b_u_a + '/compiler/get_contest_problems/', data=data).json()
     if not problem_list['correct']:
         return HttpResponse(problem_list['correct'])
+    print(problem_list['restricted'], problem_list['creator'])
     if problem_list['restricted'] == 'submitter':
         if not request.user.is_superuser or not request.user.username == problem_list['creator']:
-            redirect('problems:upcoming_contest', contest_id)
+            return redirect('problems:upcoming_contest', contest_id)
     problem_list = problem_list['problems']
     for m in problem_list:
         print(m['problem_name'])

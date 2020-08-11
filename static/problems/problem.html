@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
     <div class="container text-white">
-        {% if user.is_staff %}
+        {% if user.is_superuser or problem.creator == user.username %}
             <div class="bg-info"><p>Add more powerful test case to make your problem powerful. Due to hardware
                 restrictions don't add more than 10 test case which may make judging impossible.</p></div>
             <a href="{% url 'problems:add_test_case' problem.id %}" class="btn-lg btn-outline-success">Add TestCase</a>
@@ -30,8 +30,11 @@
         <form action="{% url 'problems:sub_res' problem.id %}" method="post" name="codeForm">
             {% csrf_token %}
             <label for="editor" class="h3">Enter you code</label>
+            <span class="text-dark btn btn-light" onclick="changeTheme('ace/theme/chrome')">White</span>
+            <span class="text-success btn btn-dark" onclick="changeTheme('ace/theme/gob')">Dark</span>
             <pre id="editor"></pre>
-            <label for="code"></label>
+            <label for="code">
+            </label>
             <textarea name="code" id="code" style="display: none;"></textarea>
             <input type="hidden" value="{{ contest_id }}" name="contest_id">
             <button type="submit" class="btn-lg btn-outline-success">Send</button>
@@ -45,7 +48,13 @@
         ace.require("ace/ext/language_tools");
         var editor = ace.edit("editor");
         editor.session.setMode("ace/mode/c_cpp");
-        editor.setTheme("ace/theme/gob");
+        editor.setTheme("ace/theme/chrome");
+
+        // Function to change theme
+        function changeTheme(theme) {
+            editor.setTheme(theme)
+        }
+
         // enable autocompletion and snippets
         editor.setOptions({
             enableBasicAutocompletion: true,

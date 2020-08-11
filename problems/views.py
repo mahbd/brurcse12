@@ -38,6 +38,8 @@ def time_convert(time):
 def get_file(request, file_name):
     if file_name == "mode-c_cpp.js":
         file = requests.get('https://drive.google.com/uc?export=download&id=1pm1g-mt3BJstjKlUYAEyETuW6pVH4v6Q').content
+    elif file_name == "theme-chrome.js":
+        file = requests.get('https://drive.google.com/uc?export=download&id=1Wi77PRnsw3cVEc9s4WX2l9W_GwHTjqVM').content
     else:
         file = requests.get('https://drive.google.com/uc?export=download&id=1qh6kmc7XVi06_6tEeRWdGzvzCFycapop').content
     return HttpResponse(file, content_type='application/javascript')
@@ -197,6 +199,9 @@ def contest_problems(request, contest_id):
     problem_list = requests.post('http://' + b_u_a + '/compiler/get_contest_problems/', data=data).json()
     if not problem_list['correct']:
         return HttpResponse(problem_list['correct'])
+    if problem_list['restricted'] == 'submitter':
+        if not request.user.is_superuser or not request.user.username == problem_list['creator']:
+            redirect('problems:upcoming_contest', contest_id)
     problem_list = problem_list['problems']
     for m in problem_list:
         print(m['problem_name'])

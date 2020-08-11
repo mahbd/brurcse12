@@ -162,8 +162,9 @@ def contest_list(request):
         end_time = pytz.timezone('UTC').localize(datetime.strptime(cc['end_time'], "%Y-%m-%dT%H:%M:%SZ"))
         start_time = start_time.astimezone(tz_dhaka)
         end_time = end_time.astimezone(tz_dhaka)
+        cc['creator_nick'] = cc['creator']
         try:
-            cc['creator'] = User.objects.get(username=cc['creator']).userinfo.nick_name
+            cc['creator_nick'] = User.objects.get(username=cc['creator']).userinfo.nick_name
         except User.DoesNotExist:
             pass
         try:
@@ -201,7 +202,7 @@ def contest_problems(request, contest_id):
         return HttpResponse(problem_list['correct'])
     print(problem_list['restricted'], problem_list['creator'])
     if problem_list['restricted'] == 'submitter':
-        if not request.user.is_superuser or not request.user.username == problem_list['creator']:
+        if not request.user.is_superuser and not request.user.username == problem_list['creator']:
             return redirect('problems:upcoming_contest', contest_id)
     problem_list = problem_list['problems']
     for m in problem_list:

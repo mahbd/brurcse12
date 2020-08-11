@@ -33,7 +33,7 @@
                         <div class="row"><div class="col-auto align-right"><p>Start: {{ contest.start_time }}</p></div>
                             <div class="col-auto align-right"><p>End: {{ contest.end_time }}</p></div></div>
                     </div>
-                    {% if user.is_staff or user.user_info.nick_name == contest.creator or user.userinfo.nick_name == contest.tester %}
+                    {% if user.is_superuser or user.username == contest.creator or user.username == contest.tester %}
                         <div class="card-body">
                             <a class="h4" href="{% url 'problems:contest_problem' contest.id %}">{{ contest.contest_name }}</a>
                         </div>

@@ -10,7 +10,7 @@
             <a href="{% url 'problems:test_case_list' problem.id %}" class="btn-lg btn-outline-success">Case List</a>
         {% endif %}
         <h2>{{ problem.problem_name }}</h2>
-        <p>{{ problem.problem_statement }}</p>
+        <p>{{ problem.problem_statement|safe }}</p>
         <h4>Input:</h4>
         <p>{{ problem.input_terms }}</p>
         <h4>Output</h4>

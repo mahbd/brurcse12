@@ -457,7 +457,7 @@ def add_test_case_api(request, problem_id):
     if request.method == 'POST':
         data = {
             'problem_id': problem_id,
-            'inputs': request.POST['inputs'],
+            'inputs': request.body['inputs'],
             "JAT": JAT,
         }
         response = requests.post('http://' + b_u_a + '/compiler/add_test_case/', data=data).json()

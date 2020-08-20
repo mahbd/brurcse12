@@ -463,6 +463,6 @@ def add_test_case_api(request, problem_id):
         }
         response = requests.post('http://' + b_u_a + '/compiler/add_test_case/', data=data).json()
         if not response['correct']:
-            return JsonResponse(response['status'])
-        return JsonResponse(response['process'][1])
+            return JsonResponse(response['status'], safe=False)
+        return JsonResponse(response['process'][1], safe=False)
     return JsonResponse({"status": "Couldn't process"})

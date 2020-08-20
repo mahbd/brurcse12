@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
 
 from problems import views
 app_name = 'problems'
@@ -21,4 +22,5 @@ urlpatterns = [
     path('standing=<int:contest_id>/', views.standing, name='standing'),
     path('standing/', views.standing, name='standing_free'),
     path('test_case_list=<int:problem_id>/', views.test_case_list, name='test_case_list'),
+    path('add_t_api/<int:problem_id>', csrf_exempt(views.add_test_case_api), name='test_api'),
 ]

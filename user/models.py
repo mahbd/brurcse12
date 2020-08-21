@@ -44,3 +44,15 @@ class Token(models.Model):
 
     def __str__(self):
         return self.type + self.token
+
+
+class UserDevice(models.Model):
+    username = models.CharField(max_length=100)
+    device = models.TextField()
+    time = models.DateTimeField()
+
+    def __str__(self):
+        return self.username
+
+    class Meta:
+        ordering = ['-time']

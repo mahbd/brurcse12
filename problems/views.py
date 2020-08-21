@@ -13,6 +13,8 @@ import requests
 from django.contrib.auth.decorators import login_required
 from django.http import *
 from django.shortcuts import render, redirect
+
+from user.models import UserDevice
 from .models import ProbAnn
 from home.models import SecretKeys, DData
 
@@ -78,6 +80,16 @@ def problems(request):  # All visible problem list
 
 @login_required
 def problem(request, problem_id, contest_id=0):  # Single problem
+    try:
+        if request.user.is_authenticated:
+            UserDevice.objects.get_or_create(username=request.user.username,
+                                             device=request.META.get('HTTP_USER_AGENT', ''))
+            user_obj = UserDevice.objects.get(username=request.user.username,
+                                              device=request.META.get('HTTP_USER_AGENT', ''))
+            user_obj.time = datetime.now()
+    except:
+        pass
+
     data = {
         "problem_id": problem_id,
         "JAT": JAT

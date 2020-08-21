@@ -49,7 +49,7 @@ class Token(models.Model):
 class UserDevice(models.Model):
     username = models.CharField(max_length=100)
     device = models.TextField()
-    time = models.DateTimeField()
+    time = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.username

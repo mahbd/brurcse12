@@ -2,6 +2,7 @@ import json
 import os
 from datetime import datetime, timezone
 from operator import itemgetter
+from random import randint
 
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
@@ -26,6 +27,20 @@ b_u_a = 'mahbd.pythonanywhere.com'
 
 
 # b_u_a = '127.0.0.1:8001'
+
+
+def record_device(request):
+    if request.user.is_authenticated:
+        username = request.user.username
+    else:
+        username = 'guest'
+    UserDevice.objects.get_or_create(username=username,
+                                     device=request.META.get('HTTP_USER_AGENT', ''))
+    user_obj = UserDevice.objects.get(username=username,
+                                      device=request.META.get('HTTP_USER_AGENT', ''))
+    user_obj.time = datetime.now()
+    user_obj.save()
+    print(user_obj.device)
 
 
 # Convert UTC string to python Dhaka timezone
@@ -59,6 +74,7 @@ def get_file_snippets(request, file_name):
 
 # Problem Section
 def problems(request):  # All visible problem list
+    record_device(request)
     ann = ProbAnn.objects.all()
     data = {
         "JAT": JAT,
@@ -80,16 +96,7 @@ def problems(request):  # All visible problem list
 
 @login_required
 def problem(request, problem_id, contest_id=0):  # Single problem
-    try:
-        if request.user.is_authenticated:
-            UserDevice.objects.get_or_create(username=request.user.username,
-                                             device=request.META.get('HTTP_USER_AGENT', ''))
-            user_obj = UserDevice.objects.get(username=request.user.username,
-                                              device=request.META.get('HTTP_USER_AGENT', ''))
-            user_obj.time = datetime.now()
-    except:
-        pass
-
+    record_device(request)
     data = {
         "problem_id": problem_id,
         "JAT": JAT
@@ -160,6 +167,7 @@ def add_problem(request, cid):  # Add problem for both contest and regular
 
 # Contest section
 def contest_list(request):
+    record_device(request)
     data = {
         "JAT": JAT,
     }
@@ -206,6 +214,7 @@ def contest_list(request):
 
 
 def contest_problems(request, contest_id):
+    record_device(request)
     data = {
         'contest_id': contest_id,
         "JAT": JAT
@@ -267,6 +276,7 @@ def ended_contest(request, contest_id):
 
 
 def standing(request, contest_id=False):
+    record_device(request)
     if not contest_id:
         contest_id = DData.objects.get(name='current_standing').data
     data = {
@@ -306,6 +316,7 @@ def standing(request, contest_id=False):
 
 # Submission section
 def all_submissions(request):
+    record_device(request)
     data = {
         "JAT": JAT,
     }
@@ -337,6 +348,7 @@ def all_submissions(request):
 
 @login_required
 def submission(request, sub_id):
+    record_device(request)
     data = {
         "JAT": JAT,
         "submission_id": sub_id,

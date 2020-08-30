@@ -222,7 +222,6 @@ def contest_problems(request, contest_id):
     problem_list = requests.post('http://' + b_u_a + '/compiler/get_contest_problems/', data=data).json()
     if not problem_list['correct']:
         return HttpResponse(problem_list['correct'])
-    print(problem_list['restricted'], problem_list['creator'])
     if problem_list['restricted'] == 'submitter':
         if not request.user.is_superuser and not request.user.username == problem_list['creator']:
             return redirect('problems:upcoming_contest', contest_id)
@@ -356,7 +355,7 @@ def submission(request, sub_id):
     response = requests.post('http://' + b_u_a + '/compiler/get_submission/', data=data).json()
     if not response['correct']:
         return HttpResponse(response['status'])
-    if DData.objects.get(name='contest_running').data == 'YES':
+    if response['restricted'] == 'submitter':
         if request.user.is_superuser or response["process"]["problem_creator"] == request.user.username:
             pass
         elif request.user.username != response['process']['submitter_code']:
